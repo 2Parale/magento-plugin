@@ -1,0 +1,17 @@
+# IDEs
+.vscode/
+
+#System
+.DS_Store
+Thumbs.db
+
+#Logs
+logs/
+*.log
+*.log.*
+*.log.*.*
+*.log.*.*.*
+*.log.*.*.*.*
+*.log.*.*.*.*.*
+*.log.*.*.*.*.*.*
+*.log.*.*.*.*.*.*.*
