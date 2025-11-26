@@ -1,0 +1,59 @@
+version: 2.1
+
+jobs:
+  ci-tests:
+    machine:
+      image: ubuntu-2204:current
+    # resource_class: large
+    steps:
+      - checkout
+
+      - run:
+          name: Setup Environment Variables
+          command: |
+            # Create .env file for docker-compose
+            # CircleCI environment variables must be set in the project settings
+            if [ -z "$MAGENTO_PUBLIC_KEY" ] || [ -z "$MAGENTO_PRIVATE_KEY" ]; then
+              echo "Error: MAGENTO_PUBLIC_KEY and MAGENTO_PRIVATE_KEY must be set in CircleCI environment variables."
+              exit 1
+            fi
+            echo "MAGENTO_PUBLIC_KEY=$MAGENTO_PUBLIC_KEY" >> docker/.env
+            echo "MAGENTO_PRIVATE_KEY=$MAGENTO_PRIVATE_KEY" >> docker/.env
+
+      - run:
+          name: Start Docker Environment
+          command: |
+            cd docker
+            docker compose up -d --build
+
+      - run:
+          name: Wait for Magento Initialization
+          command: |
+            cd docker
+            echo "Waiting for Magento to install and initialize..."
+            # Timeout after 15 minutes (Magento install can be slow)
+            timeout 900s bash -c '
+              until docker compose exec -T magento bin/magento module:status TwoPerformant_BusinessLeagueMarketing | grep -q "Module is enabled"; do 
+                echo "Waiting for module to be enabled..."
+                sleep 10
+              done
+            '
+            echo "Magento is ready."
+
+      - run:
+          name: Run Integration Tests
+          command: |
+            cd docker
+            # Run the integration tests for the module
+            # We point phpunit to the module's test directory which is mounted in the container
+            docker compose exec -T magento \
+              php -dmemory_limit=-1 \
+              ./vendor/bin/phpunit \
+              -c dev/tests/integration/phpunit.xml \
+              packages/two-performant/business-league-marketing/Test/Integration
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - ci-tests
