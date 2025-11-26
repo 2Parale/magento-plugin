@@ -4,6 +4,11 @@ This repository contains the source code, tests, and CI/CD configuration for the
 
 ---
 
+## Table of Contents
+
+- [Local Development with Docker](#local-development-with-docker)
+- [Testing](#testing)
+
 ## Local Development with Docker
 
 This project provides a ready-to-use Docker setup for local development and testing with Magento 2 / Adobe Commerce.
@@ -55,3 +60,29 @@ This project provides a ready-to-use Docker setup for local development and test
    - For customizations, you can mount code or configuration as needed using the `volumes` section.
 
 ---
+
+## Testing
+
+This project utilizes Magento's built-in testing framework, which is incorporated into the `magento` Docker container. Therefore, all test execution should occur inside the running Magento container to ensure the correct environment and dependencies.
+
+### Integration Testing
+
+- Integration tests are located in the `Test/Integration` directory.
+- To run the test suite:
+
+    1. **Start the Docker containers**  
+       (Refer to the "Local Development with Docker" section above.)
+
+    2. **Access the Magento container shell**  
+        ```sh
+        docker compose -f docker/docker-compose.yml exec magento bash
+        ```
+
+    3. **Navigate to the integration test suite and run tests**  
+        ```sh
+        cd dev/tests/integration
+        ../../../vendor/bin/phpunit --testsuite "2Performant_BusinessLeagueMarketing Integration Tests"
+        ```
+
+**Note:**
+- Ensure all Composer dependencies have been installed before running tests.
