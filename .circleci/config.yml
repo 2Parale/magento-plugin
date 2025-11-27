@@ -4,7 +4,7 @@ jobs:
   ci-tests:
     machine:
       image: ubuntu-2204:current
-    # resource_class: large
+    resource_class: large
     steps:
       - checkout
 
@@ -37,7 +37,7 @@ jobs:
                 echo "Waiting for module to be enabled..."
                 sleep 10
               done
-            '
+            ' || { echo "Timed out waiting for Magento"; exit 1; }
             echo "Magento is ready."
 
       - run:
