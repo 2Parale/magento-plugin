@@ -73,16 +73,11 @@ This project utilizes Magento's built-in testing framework, which is incorporate
     1. **Start the Docker containers**  
        (Refer to the "Local Development with Docker" section above.)
 
-    2. **Access the Magento container shell**  
-        ```sh
-        docker compose -f docker/docker-compose.yml exec magento bash
+    2. **Run the integration test suid**  
+        ```bash
+        docker compose exec magento bash -c "cd dev/tests/integration && ../../../vendor/bin/phpunit ../../../vendor/two-performant/business-league-marketing/Test/Integration/"
         ```
 
-    3. **Navigate to the integration test suite and run tests**  
-        ```sh
-        cd dev/tests/integration
-        ../../../vendor/bin/phpunit --testsuite "2Performant_BusinessLeagueMarketing Integration Tests"
-        ```
 
 **Note:**
 - Ensure all Composer dependencies have been installed before running tests.

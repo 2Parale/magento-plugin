@@ -4,7 +4,7 @@ jobs:
   ci-tests:
     machine:
       image: ubuntu-2204:current
-    resource_class: large
+    # resource_class: large
     steps:
       - checkout
 
@@ -46,11 +46,7 @@ jobs:
             cd docker
             # Run the integration tests for the module
             # We point phpunit to the module's test directory which is mounted in the container
-            docker compose exec -T magento \
-              php -dmemory_limit=-1 \
-              ./vendor/bin/phpunit \
-              -c dev/tests/integration/phpunit.xml \
-              packages/two-performant/business-league-marketing/Test/Integration
+            docker compose exec magento bash -c "cd dev/tests/integration && ../../../vendor/bin/phpunit ../../../vendor/two-performant/business-league-marketing/Test/Integration/"
 
 workflows:
   version: 2
