@@ -48,6 +48,7 @@ services:
         composer require two-performant/business-league-marketing:@dev
         bin/magento module:enable TwoPerformant_BusinessLeagueMarketing
         bin/magento setup:upgrade
+        echo "TwoPerformant_BusinessLeagueMarketing module is ready."
         exec /usr/local/sbin/php-fpm
       '
   nginx:

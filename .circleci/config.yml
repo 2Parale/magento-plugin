@@ -30,10 +30,10 @@ jobs:
           name: Wait for Magento Initialization
           command: |
             cd docker
-            echo "Waiting for Magento to install and initialize..."
+            echo "Waiting for Magento to install and initialize and the module to be enabled..."
             # Timeout after 15 minutes (Magento install can be slow)
             timeout 900s bash -c '
-              until docker compose exec -T magento bin/magento module:status TwoPerformant_BusinessLeagueMarketing | grep -q "Module is enabled"; do 
+              until docker compose logs magento | grep -q "TwoPerformant_BusinessLeagueMarketing module is ready."; do 
                 echo "Waiting for module to be enabled..."
                 sleep 10
               done
