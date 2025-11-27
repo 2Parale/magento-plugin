@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  ci-tests:
+  test:
     machine:
       image: ubuntu-2204:current
     # resource_class: large
@@ -52,4 +52,4 @@ workflows:
   version: 2
   test:
     jobs:
-      - ci-tests
+      - test
