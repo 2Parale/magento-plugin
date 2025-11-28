@@ -1,0 +1,19 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <twoperformant>
+            <identifiers>
+                <campaign_unique>camp_uniq</campaign_unique>
+                <confirm>conf</confirm>
+                <big_bear_unique>big_b_uniq</big_bear_unique>
+            </identifiers>
+            <params>
+                <big_bear_params>["2pau","2ptt","2ptu","2prp","2pdlst"]</big_bear_params>
+            </params>
+            <urls>
+                <iframe_url>https://event.2performant.com/events/salecheck</iframe_url>
+                <click_script_url>https://attr-2p.com/__replace-me__/clc/1.js</click_script_url>
+                <sales_script_url>https://attr-2p.com/__replace-me__/sls/1.js</sales_script_url>
+            <urls>
+        </twoperformant>
+    </default>
+</config>
