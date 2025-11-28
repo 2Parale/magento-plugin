@@ -11,9 +11,9 @@
             </params>
             <urls>
                 <iframe_url>https://event.2performant.com/events/salecheck</iframe_url>
-                <click_script_url>https://attr-2p.com/__replace-me__/clc/1.js</click_script_url>
-                <sales_script_url>https://attr-2p.com/__replace-me__/sls/1.js</sales_script_url>
-            <urls>
+                <click_script_url>https://attr-2p.com/__replace_me__/clc/1.js</click_script_url>
+                <sales_script_url>https://attr-2p.com/__replace_me__/sls/1.js</sales_script_url>
+            </urls>
         </twoperformant>
     </default>
 </config>
