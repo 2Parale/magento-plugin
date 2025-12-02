@@ -7,11 +7,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install dependencies
-        command: composer install --prefer-dist --no-progress
+          name: Install dependencies
+          command: composer install --prefer-dist --no-progress
       - run:
-        name: Run lint
-        command: composer lint
+          name: Run lint
+          command: composer lint
   test:
     machine:
       image: ubuntu-2204:current
