@@ -11,7 +11,7 @@ use TwoPerformant\BusinessLeagueMarketing\Model\Validator\Validator;
 
 /**
  * Observer for rendering the tracking scripts
- * 
+ *
  * @since 1.0.0
  */
 class ClickTrackingScriptRenderer implements ObserverInterface
@@ -38,7 +38,7 @@ class ClickTrackingScriptRenderer implements ObserverInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param PageConfig $pageConfig
      * @param Config $config
      * @param Validator $validator
@@ -54,7 +54,7 @@ class ClickTrackingScriptRenderer implements ObserverInterface
 
     /**
      * Execute the observer
-     * 
+     *
      * @param Observer $observer
      */
     public function execute(Observer $observer): void
@@ -69,11 +69,10 @@ class ClickTrackingScriptRenderer implements ObserverInterface
                 // Add the click script to the page
                 $this->pageConfig->addRemotePageAsset(
                     $scriptUrl,
-                        'js',
-                        ['attributes' => ['async' => 'async']]
+                    'js',
+                    ['attributes' => ['async' => 'async']]
                 );
-            }
-            else {
+            } else {
                 // Log warning that script is invalid
                 $this->logger->warning(
                     'TwoPerformant: Invalid click script URL blocked.',

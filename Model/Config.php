@@ -6,29 +6,32 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Config model for the BusinessLeagueMarketing module
- * 
+ *
  * @since 1.0.0
  */
 class Config
 {
     /**
      * Define where the config values are stored in the Magento configuration
-     * 
+     *
      * @var string
      */
-    const PATH_CAMPAIGN_UNIQUE = 'twoperformant/identifiers/campaign_unique';
-    const PATH_CONFIRM = 'twoperformant/identifiers/confirm';
-    const PATH_BIG_BEAR_UNIQUE = 'twoperformant/identifiers/big_bear_unique';
-    const PATH_BIG_BEAR_PARAMS = 'twoperformant/params/big_bear_params';
-    const PATH_IFRAME_URL = 'twoperformant/urls/iframe_url';
-    const PATH_CLICK_SCRIPT_URL = 'twoperformant/urls/click_script_url';
-    const PATH_SALES_SCRIPT_URL = 'twoperformant/urls/sales_script_url';
+    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant/identifiers/campaign_unique';
+    private const PATH_CONFIRM = 'twoperformant/identifiers/confirm';
+    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant/identifiers/big_bear_unique';
+    private const PATH_BIG_BEAR_PARAMS = 'twoperformant/params/big_bear_params';
+    private const PATH_IFRAME_URL = 'twoperformant/urls/iframe_url';
+    private const PATH_CLICK_SCRIPT_URL = 'twoperformant/urls/click_script_url';
+    private const PATH_SALES_SCRIPT_URL = 'twoperformant/urls/sales_script_url';
 
+    /**
+     * @var ScopeConfigInterface
+     */
     private $scopeConfig;
 
     /**
      * Constructor
-     * 
+     *
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(ScopeConfigInterface $scopeConfig)
@@ -38,7 +41,7 @@ class Config
 
     /**
      * Get the campaign unique identifier
-     * 
+     *
      * @return string
      */
     public function getCampaignUnique(): string
@@ -49,7 +52,7 @@ class Config
 
     /**
      * Get the confirm identifier
-     * 
+     *
      * @return string
      */
     public function getConfirm(): string
@@ -59,7 +62,7 @@ class Config
 
     /**
      * Get the big bear unique identifier
-     * 
+     *
      * @return string
      */
     public function getBigBearUnique(): string
@@ -69,7 +72,7 @@ class Config
     
     /**
      * Get the big bear parameters
-     * 
+     *
      * @return array
      */
     public function getBigBearParams(): array
@@ -81,7 +84,7 @@ class Config
 
     /**
      * Get the iframe URL
-     * 
+     *
      * @return string
      */
     public function getIframeUrl(): string
@@ -91,7 +94,7 @@ class Config
 
     /**
      * Get the click script URL
-     * 
+     *
      * @return string
      */
     public function getClickScriptUrl(): string
@@ -104,7 +107,7 @@ class Config
 
     /**
      * Get the sales script URL
-     * 
+     *
      * @return string
      */
     public function getSalesScriptUrl(): string
