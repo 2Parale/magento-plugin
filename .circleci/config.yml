@@ -1,6 +1,17 @@
 version: 2.1
 
 jobs:
+  lint:
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - checkout
+      - run:
+        name: Install dependencies
+        command: composer install --prefer-dist --no-progress
+      - run:
+        name: Run lint
+        command: composer lint
   test:
     machine:
       image: ubuntu-2204:current
@@ -52,4 +63,7 @@ workflows:
   version: 2
   test:
     jobs:
-      - test
+      - lint
+      - test:
+          requires:
+            - lint
