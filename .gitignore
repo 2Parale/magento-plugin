@@ -21,3 +21,7 @@ logs/
 
 #vendor
 vendor/
+
+#test artifacts
+coverage/
+Test/Unit/.phpunit.result.cache
