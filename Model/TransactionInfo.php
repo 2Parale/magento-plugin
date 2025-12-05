@@ -59,10 +59,10 @@ class TransactionInfo implements ArgumentInterface
     /**
      * Process the order items
      *
-     * @param Order $order
+     * @param Magento\Sales\Model\Order\Interceptor $order
      * @return array
      */
-    private function processOrderItems(Order $order): array
+    private function processOrderItems(\Magento\Sales\Model\Order\Interceptor $order): array
     {
 
         // initialize the items array
