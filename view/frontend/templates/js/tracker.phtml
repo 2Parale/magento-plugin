@@ -5,6 +5,7 @@
 $viewModel = $block->getData('tp_order');
 /** @var \TwoPerformant\BusinessLeagueMarketing\ViewModel\TpOrder $viewModel */
 $tpOrder = $viewModel->getTpOrder();
+$slsUrl = $viewModel->getSlsUrl();
 ?>
 
 
@@ -12,3 +13,5 @@ $tpOrder = $viewModel->getTpOrder();
     <script>
         var tpOrder =  <?= /* @noEscape */ $tpOrder; ?>;
     </script>
+    <script defer src="<?= /* @noEscape */ $slsUrl; ?>"></script>
+    
