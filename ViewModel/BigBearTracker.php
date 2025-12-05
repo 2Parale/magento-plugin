@@ -7,11 +7,11 @@ use TwoPerformant\BusinessLeagueMarketing\Model\TransactionInfo;
 use TwoPerformant\BusinessLeagueMarketing\Model\Config;
 
 /**
- * TpOrder view model for the BusinessLeagueMarketing module
+ * BigBearTracker view model for the BusinessLeagueMarketing module
  *
  * @since 1.0.0
  */
-class TpOrder implements ArgumentInterface
+class BigBearTracker implements ArgumentInterface
 {
 
     /**

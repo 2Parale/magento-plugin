@@ -1,11 +1,11 @@
 <?php
 /** @var $block \Magento\Framework\View\Element\Template */
-/** @var $viewModel \TwoPerformant\BusinessLeagueMarketing\ViewModel\TpOrder */
+/** @var $bigBearViewModel \TwoPerformant\BusinessLeagueMarketing\ViewModel\BigBearTracker */
 
-$viewModel = $block->getData('tp_order');
-/** @var \TwoPerformant\BusinessLeagueMarketing\ViewModel\TpOrder $viewModel */
-$tpOrder = $viewModel->getTpOrder();
-$slsUrl = $viewModel->getSlsUrl();
+$bigBearViewModel = $block->getData('big_bear_view_model');
+/** @var \TwoPerformant\BusinessLeagueMarketing\ViewModel\BigBearTracker $bigBearViewModel */
+$tpOrder = $bigBearViewModel->getTpOrder();
+$slsUrl = $bigBearViewModel->getSlsUrl();
 ?>
 
 
@@ -14,4 +14,3 @@ $slsUrl = $viewModel->getSlsUrl();
         var tpOrder =  <?= /* @noEscape */ $tpOrder; ?>;
     </script>
     <script defer src="<?= /* @noEscape */ $slsUrl; ?>"></script>
-    

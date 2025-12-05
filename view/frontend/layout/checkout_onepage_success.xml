@@ -4,7 +4,7 @@
         <referenceContainer name="before.body.end">
             <block class="Magento\Framework\View\Element\Template" name="custom.js.tracker" template="TwoPerformant_BusinessLeagueMarketing::js/tracker.phtml">
                 <arguments>
-                    <argument name="tp_order" xsi:type="object">TwoPerformant\BusinessLeagueMarketing\ViewModel\TpOrder</argument>
+                    <argument name="big_bear_view_model" xsi:type="object">TwoPerformant\BusinessLeagueMarketing\ViewModel\BigBearTracker</argument>
                 </arguments>
             </block>
         </referenceContainer>
