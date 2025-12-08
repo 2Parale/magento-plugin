@@ -34,7 +34,7 @@ class TransactionInfo implements ArgumentInterface
     public function getTransactionInfo(): array|null
     {
         // get the order object
-        $order = $this->checkoutSession->getLastRealOrder();;
+        $order = $this->checkoutSession->getLastRealOrder();
         if(!$order){
             return null;
         }
@@ -59,10 +59,10 @@ class TransactionInfo implements ArgumentInterface
     /**
      * Process the order items
      *
-     * @param Magento\Sales\Model\Order\Interceptor $order
+     * @param Magento\Sales\Model\Order $order
      * @return array
      */
-    private function processOrderItems(\Magento\Sales\Model\Order\Interceptor $order): array
+    private function processOrderItems(\Magento\Sales\Model\Order $order): array
     {
 
         // initialize the items array
