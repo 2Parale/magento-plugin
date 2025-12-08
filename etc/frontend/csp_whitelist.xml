@@ -6,5 +6,10 @@
                 <value id="attr-2p-com" type="host">attr-2p.com</value>
             </values>
         </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="event-2performant-com" type="host">event.2performant.com</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>

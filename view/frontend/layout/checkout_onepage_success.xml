@@ -5,6 +5,7 @@
             <block class="Magento\Framework\View\Element\Template" name="custom.js.tracker" template="TwoPerformant_BusinessLeagueMarketing::js/tracker.phtml">
                 <arguments>
                     <argument name="big_bear_view_model" xsi:type="object">TwoPerformant\BusinessLeagueMarketing\ViewModel\BigBearTracker</argument>
+                    <argument name="pixel_view_model" xsi:type="object">TwoPerformant\BusinessLeagueMarketing\ViewModel\PixelTracker</argument>
                 </arguments>
             </block>
         </referenceContainer>

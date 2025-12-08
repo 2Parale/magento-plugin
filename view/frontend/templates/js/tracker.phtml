@@ -1,11 +1,15 @@
 <?php
 /** @var $block \Magento\Framework\View\Element\Template */
 /** @var $bigBearViewModel \TwoPerformant\BusinessLeagueMarketing\ViewModel\BigBearTracker */
-
+/** @var $pixelViewModel \TwoPerformant\BusinessLeagueMarketing\ViewModel\PixelTracker */
 $bigBearViewModel = $block->getData('big_bear_view_model');
 /** @var \TwoPerformant\BusinessLeagueMarketing\ViewModel\BigBearTracker $bigBearViewModel */
+$pixelViewModel = $block->getData('pixel_view_model');
+/** @var \TwoPerformant\BusinessLeagueMarketing\ViewModel\PixelTracker $pixelViewModel */
+$iframeUrl = $pixelViewModel->getIframeUrl();
 $tpOrder = $bigBearViewModel->getTpOrder();
 $slsUrl = $bigBearViewModel->getSlsUrl();
+$iframeUrl = $pixelViewModel->getIframeUrl();
 ?>
 
 
@@ -13,4 +17,7 @@ $slsUrl = $bigBearViewModel->getSlsUrl();
     <script>
         var tpOrder =  <?= /* @noEscape */ $tpOrder; ?>;
     </script>
-    <script defer src="<?= /* @noEscape */ $slsUrl; ?>"></script>
+    <script defer src="<?= $block->escapeUrl($slsUrl); ?>"></script>
+    <?php if($iframeUrl): ?>
+        <iframe height="1" width="1" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" src="<?= $block->escapeUrl($iframeUrl); ?>"></iframe>
+    <?php endif; ?>
