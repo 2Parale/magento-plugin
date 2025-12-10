@@ -28,6 +28,14 @@ namespace Magento\Framework\App\Response {
     }
 }
 
+namespace Magento\Framework\App\Config {
+    if (!interface_exists('Magento\Framework\App\Config\ScopeConfigInterface')) {
+        interface ScopeConfigInterface {
+            public function getValue($path, $scopeType = 'default', $scopeCode = null);
+        }
+    }
+}
+
 namespace Magento\Checkout\Model {
     if (!class_exists('Magento\Checkout\Model\Session')) {
         class Session {
