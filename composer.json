@@ -38,5 +38,8 @@
         "post-update-cmd": [
             "phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../magento/php-compatibility-fork"
         ]
+    },
+    "autoload-dev": {
+        "files": ["Test/Unit/Stubs/MagentoFramework.php"]
     }
 }
