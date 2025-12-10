@@ -115,3 +115,39 @@ namespace Magento\Framework\View\Element\Block {
         interface ArgumentInterface {}
     }
 }
+
+namespace Magento\Framework\Event {
+    if (!interface_exists('Magento\Framework\Event\ObserverInterface')) {
+        interface ObserverInterface {
+            public function execute(Observer $observer);
+        }
+    }
+
+    if (!class_exists('Magento\Framework\Event\Observer')) {
+        class Observer {}
+    }
+}
+
+namespace Magento\Framework\View\Page {
+    if (!class_exists('Magento\Framework\View\Page\Config')) {
+        class Config {
+            public function addRemotePageAsset($url, $contentType, array $properties = []) {}
+        }
+    }
+}
+
+namespace Psr\Log {
+    if (!interface_exists('Psr\Log\LoggerInterface')) {
+        interface LoggerInterface {
+            public function emergency($message, array $context = []);
+            public function alert($message, array $context = []);
+            public function critical($message, array $context = []);
+            public function error($message, array $context = []);
+            public function warning($message, array $context = []);
+            public function notice($message, array $context = []);
+            public function info($message, array $context = []);
+            public function debug($message, array $context = []);
+            public function log($level, $message, array $context = []);
+        }
+    }
+}

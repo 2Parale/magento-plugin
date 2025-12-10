@@ -10,7 +10,10 @@
     </testsuites>
     <coverage>
         <include>
-            <directory>../../Model/Validator</directory>
+            <directory>../../Model</directory>
+            <directory>../../Observer</directory>
+            <directory>../../Plugin</directory>
+            <directory>../../ViewModel</directory>
         </include>
         <report>
             <html outputDirectory="../coverage" />
