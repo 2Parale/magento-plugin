@@ -34,7 +34,7 @@ class RedirectPlugin
      * @param Config $config
      * @param UrlInterface $url
      */
-    public function __construct(RequestInterface $request, Config $config,UrlInterface $url)
+    public function __construct(RequestInterface $request, Config $config, UrlInterface $url)
     {
         $this->request = $request;
         $this->config = $config;
@@ -143,7 +143,7 @@ class RedirectPlugin
             }
             // If scheme/host/path differ, it's not the same base URL
             if (!isset($parsedCurrentUrl[$key]) || $parsedLocation[$key] !== $parsedCurrentUrl[$key]) {
-                return false; 
+                return false;
             }
         }
 

@@ -27,8 +27,8 @@ class BigBearTracker implements ArgumentInterface
     /**
      * Constructor
      *
-     * @param CheckoutSession $checkoutSession
      * @param TransactionInfo $transactionInfo
+     * @param Config $config
      */
     public function __construct(TransactionInfo $transactionInfo, Config $config)
     {
@@ -49,6 +49,11 @@ class BigBearTracker implements ArgumentInterface
         return json_encode($tpOrder, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     }
 
+    /**
+     * Get the sales script URL
+     *
+     * @return string
+     */
     public function getSlsUrl(): string
     {
         return $this->config->getSalesScriptUrl();

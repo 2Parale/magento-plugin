@@ -35,7 +35,7 @@ class TransactionInfo implements ArgumentInterface
     {
         // get the order object
         $order = $this->checkoutSession->getLastRealOrder();
-        if(!$order){
+        if (!$order) {
             return null;
         }
 
@@ -69,7 +69,7 @@ class TransactionInfo implements ArgumentInterface
         $items = [];
 
         // loop through the order items
-        foreach($order->getItems() as $item){
+        foreach ($order->getItems() as $item) {
             // get the price of the item without taxes
             $value = $item->getPrice();
 
@@ -82,8 +82,8 @@ class TransactionInfo implements ArgumentInterface
             // initialize the categories array
             $categories = [];
             // loop through the categories and add the names to the array
-            foreach($categoryCollection as $category){
-                if($category->getName()){
+            foreach ($categoryCollection as $category) {
+                if ($category->getName()) {
                     $categories[] = $category->getName();
                 }
             }

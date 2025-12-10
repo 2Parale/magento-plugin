@@ -43,7 +43,7 @@ class PixelTracker implements ArgumentInterface
      */
     public function getIframeUrl(): string
     {
-        if(empty($this->transactionInfo)){
+        if (empty($this->transactionInfo)) {
             return '';
         }
 
@@ -57,7 +57,7 @@ class PixelTracker implements ArgumentInterface
         $descriptionParts = [];
 
         // loop through the order items and calculate the total value and the description
-        foreach($this->transactionInfo['items'] as $item){
+        foreach ($this->transactionInfo['items'] as $item) {
             $totalValue += (float)$item['value'] * (int)$item['quantity'];
             $descriptionParts[] = (string)$item['name'];
         }
