@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="twoperformant" translate="label" sortOrder="100">
+            <label>Business League Marketing</label>
+        </tab>
+        <section id="twoperformant" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Identifiers</label>
+            <tab>twoperformant</tab>
+            <resource>TwoPerformant_BusinessLeagueMarketing::config</resource>
+            <group id="identifiers" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Identifiers</label>
+                <field id="campaign_unique" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Campaign Unique ID</label>
+                </field>
+                <field id="confirm" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Confirm ID</label>
+                </field>
+                <field id="big_bear_unique" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Big Bear Unique ID</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
