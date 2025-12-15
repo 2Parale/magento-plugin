@@ -108,7 +108,7 @@ class TransactionInfo implements ArgumentInterface
                 $brand = implode(', ', $brand);
             }
 
-            // constract the array containing the item info and add it to the items array
+            // construct the array containing the item info and add it to the items array
             $item = [
                 'product_id' =>(string) $item->getProductId(),
                 'name' => (string) $item->getName(),
