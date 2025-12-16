@@ -18,3 +18,10 @@ logs/
 *.log.*.*.*.*.*
 *.log.*.*.*.*.*.*
 *.log.*.*.*.*.*.*.*
+
+#vendor
+vendor/
+
+#test artifacts
+coverage/
+Test/Unit/.phpunit.result.cache

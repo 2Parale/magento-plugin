@@ -8,6 +8,7 @@ This repository contains the source code, tests, and CI/CD configuration for the
 
 - [Local Development with Docker](#local-development-with-docker)
 - [Testing](#testing)
+- [Code Quality & Linting](#code-quality--linting)
 
 ## Local Development with Docker
 
@@ -81,3 +82,14 @@ This project utilizes Magento's built-in testing framework, which is incorporate
 
 **Note:**
 - Ensure all Composer dependencies have been installed before running tests.
+
+---
+
+## Code Quality & Linting
+
+- Uses Magento Coding Standard for linting.
+- Run linter:
+  ```sh
+  composer lint
+  ```
+  

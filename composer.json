@@ -13,6 +13,33 @@
         }
     },
     "require": {
-        "php": "~7.1.3 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.1.0 || ~8.2.0 || ~8.3.0"
+        "php": "~7.1.3 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0" 
+    },
+    "require-dev": {
+        "magento/magento-coding-standard": "^38.0",
+        "phpcompatibility/php-compatibility": "*",
+        "phpunit/phpunit": "^9.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": [
+            "vendor/bin/phpcs --runtime-set ignore_warnings_on_exit 1"
+        ],
+        "unit-test":[
+            "XDEBUG_MODE=coverage vendor/bin/phpunit --configuration Test/Unit/phpunit.local.xml"
+        ],
+        "post-install-cmd": [
+        "phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../magento/php-compatibility-fork"
+        ],
+        "post-update-cmd": [
+            "phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../magento/php-compatibility-fork"
+        ]
+    },
+    "autoload-dev": {
+        "files": ["Test/Unit/Stubs/MagentoFramework.php"]
     }
 }

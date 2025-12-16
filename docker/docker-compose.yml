@@ -48,6 +48,16 @@ services:
         composer require two-performant/business-league-marketing:@dev
         bin/magento module:enable TwoPerformant_BusinessLeagueMarketing
         bin/magento setup:upgrade
+        bin/magento config:set system/smtp/disable 1
+        bin/magento config:set sales_email/order/enabled 0
+        bin/magento config:set sales_email/invoice/enabled 0
+        bin/magento config:set sales_email/shipment/enabled 0
+        bin/magento config:set sales_email/general/async_sending 1
+        bin/magento setup:static-content:deploy -f
+        bin/magento indexer:reindex
+        bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth
+        bin/magento module:disable Magento_TwoFactorAuth
+        bin/magento cache:flush
         echo "TwoPerformant_BusinessLeagueMarketing module is ready."
         exec /usr/local/sbin/php-fpm
       '

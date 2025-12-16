@@ -1,6 +1,20 @@
 version: 2.1
 
 jobs:
+  fast-checks:
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: composer install --prefer-dist --no-progress
+      - run:
+          name: Run lint
+          command: composer lint
+      - run:
+          name: Run unit tests
+          command: composer unit-test
   test:
     machine:
       image: ubuntu-2204:current
@@ -52,4 +66,7 @@ workflows:
   version: 2
   test:
     jobs:
-      - test
+      - fast-checks
+      - test:
+          requires:
+            - fast-checks

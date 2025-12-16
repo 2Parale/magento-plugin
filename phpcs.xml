@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="Magento2">
+    <description>Magento 2 Coding Standard</description>
+    <arg value="p"/>
+    <arg name="colors"/>
+    
+    <!-- Use the Magento2 standard -->
+    <rule ref="Magento2"/>
+
+    <!-- Scan the current directory and subdirectories -->
+    <file>.</file>
+
+    <!-- EXCLUDE these folders from the scan -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>docker/*</exclude-pattern>
+    <exclude-pattern>Test/*</exclude-pattern>
+    <exclude-pattern>dev/*</exclude-pattern>
+    <exclude-pattern>.git/*</exclude-pattern>
+</ruleset>
