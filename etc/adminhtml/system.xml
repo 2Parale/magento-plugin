@@ -42,7 +42,7 @@
                 <field id="category_commissions" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Commissions List</label>
                     <frontend_model>TwoPerformant\BusinessLeagueMarketing\Block\Adminhtml\Form\Field\Commissions</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <backend_model>TwoPerformant\BusinessLeagueMarketing\Model\Config\Backend\CategoryCommissions</backend_model>
                     <depends>
                         <field id="category_commissions_enabled">1</field>
                     </depends>
