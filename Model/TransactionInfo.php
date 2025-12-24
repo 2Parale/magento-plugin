@@ -3,6 +3,7 @@ namespace TwoPerformant\BusinessLeagueMarketing\Model;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use TwoPerformant\BusinessLeagueMarketing\Model\Config;
 
 /**
  * TransactionInfo model for the BusinessLeagueMarketing module
@@ -17,13 +18,20 @@ class TransactionInfo implements ArgumentInterface
     protected $checkoutSession;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * Constructor
      *
      * @param CheckoutSession $checkoutSession
+     * @param Config $config
      */
-    public function __construct(CheckoutSession $checkoutSession)
+    public function __construct(CheckoutSession $checkoutSession, Config $config)
     {
         $this->checkoutSession = $checkoutSession;
+        $this->config = $config;
     }
 
     /**
@@ -68,6 +76,15 @@ class TransactionInfo implements ArgumentInterface
         // initialize the items array
         $items = [];
 
+        // check if the category commissions are enabled
+        $categoryCommissionsEnabled = $this->config->getCategoryCommissionsEnabled();
+
+        //get the special category commissions
+        $specialCategoryCommissions = $categoryCommissionsEnabled ? $this->config->getCategoryCommissions() : [];
+        var_dump($specialCategoryCommissions ? $specialCategoryCommissions : 'no');
+        //get the special commission categories ids
+        $specialCommissionCategoriesIds =array_keys($specialCategoryCommissions);
+
         // loop through the order items
         foreach ($order->getItems() as $item) {
             // get the price of the item without taxes
@@ -81,10 +98,19 @@ class TransactionInfo implements ArgumentInterface
             $categoryCollection->addAttributeToSelect('name');
             // initialize the categories array
             $categories = [];
+            // initialize the item's commission value
+            $commissionValue = 101;
             // loop through the categories and add the names to the array
             foreach ($categoryCollection as $category) {
                 if ($category->getName()) {
                     $categories[] = $category->getName();
+                }
+                // check if the category is a special commission category
+                if (in_array($category->getId(), $specialCommissionCategoriesIds)) {
+                    $categoryCommission = $specialCategoryCommissions[$category->getId()];
+                    if ($categoryCommission < $commissionValue) {
+                        $commissionValue = $categoryCommission;
+                    }
                 }
             }
 
@@ -117,6 +143,13 @@ class TransactionInfo implements ArgumentInterface
                 'category_name' => $categories,
                 'brand' => $brand ? (string) $brand : '',
             ];
+
+            // add the commission value if category commissions are enabled
+            if ($categoryCommissionsEnabled) {
+                $commission = $commissionValue < 101 ? $commissionValue : $this->config->getDefaultCommissionValue();
+                $item['commission_percent'] = (float) $commission;
+            }
+            
             $items[] = $item;
         }
 

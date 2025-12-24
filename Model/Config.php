@@ -16,13 +16,16 @@ class Config
      *
      * @var string
      */
-    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant/identifiers/campaign_unique';
-    private const PATH_CONFIRM = 'twoperformant/identifiers/confirm';
-    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant/identifiers/big_bear_unique';
+    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant-identifiers/identifiers/campaign_unique';
+    private const PATH_CONFIRM = 'twoperformant-identifiers/identifiers/confirm';
+    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant-identifiers/identifiers/big_bear_unique';
     private const PATH_BIG_BEAR_PARAMS = 'twoperformant/params/big_bear_params';
     private const PATH_IFRAME_URL = 'twoperformant/urls/iframe_url';
     private const PATH_CLICK_SCRIPT_URL = 'twoperformant/urls/click_script_url';
     private const PATH_SALES_SCRIPT_URL = 'twoperformant/urls/sales_script_url';
+    private const PATH_DEFAULT_COMMISSION_VALUE = 'twoperformant-commissions/commissions/category_commissions_default_commission';
+    private const PATH_CATEGORY_COMMISSIONS_ENABLED = 'twoperformant-commissions/commissions/category_commissions_enabled';
+    private const PATH_CATEGORY_COMMISSIONS = 'twoperformant-commissions/commissions/category_commissions';
 
     /**
      * @var ScopeConfigInterface
@@ -116,5 +119,52 @@ class Config
         $bigBearUnique = $this->getBigBearUnique();
         $salesScriptUrl = str_replace('__replace_me__', $bigBearUnique, $salesScriptUrlPattern);
         return $salesScriptUrl;
+    }
+
+    /**
+     * Get the default commission value
+     *
+     * @return float
+     */
+    public function getDefaultCommissionValue(): float
+    {
+        return $this->scopeConfig->getValue(self::PATH_DEFAULT_COMMISSION_VALUE);
+    }
+
+    /**
+     * Get the category commissions enabled
+     *
+     * @return bool
+     */
+    public function getCategoryCommissionsEnabled(): bool
+    {
+        return $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS_ENABLED);
+    }
+
+    /**
+     * Get the category commissions
+     *
+     * @return array
+     */
+    public function getCategoryCommissions(): array
+    {
+        $categoryCommissionsString = $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS);
+        $categoryCommissionsArray = json_decode($categoryCommissionsString, true);
+        
+        // Handle null/empty case
+        if (!is_array($categoryCommissionsArray)) {
+            return [];
+        }
+        
+        // Build a flat array: category_id => commission_value
+        $result = [];
+        foreach ($categoryCommissionsArray as $row) {
+            if (isset($row['category_id']) && isset($row['commission_value'])) {
+                // Convert commission_value to float/int if needed
+                $result[(int)$row['category_id']] = (float)$row['commission_value'];
+            }
+        }
+        
+        return $result;
     }
 }

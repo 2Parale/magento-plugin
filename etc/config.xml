@@ -1,11 +1,20 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <twoperformant>
+        <twoperformant-identifiers>
             <identifiers>
                 <campaign_unique>camp_uniq</campaign_unique>
                 <confirm>conf</confirm>
                 <big_bear_unique>big_b_uniq</big_bear_unique>
             </identifiers>
+        </twoperformant-identifiers>
+        <twoperformant-commissions>
+            <commissions>
+                <category_commissions_enabled>0</category_commissions_enabled>
+                <category_commissions_default_commission>0</category_commissions_default_commission>
+                <category_commissions>[]</category_commissions>
+            </commissions>
+        </twoperformant-commissions>
+        <twoperformant>
             <params>
                 <big_bear_params>["2pau","2ptt","2ptu","2prp","2pdlst"]</big_bear_params>
             </params>
