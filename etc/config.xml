@@ -2,9 +2,9 @@
     <default>
         <twoperformant-identifiers>
             <identifiers>
-                <campaign_unique>camp_uniq</campaign_unique>
-                <confirm>conf</confirm>
-                <big_bear_unique>big_b_uniq</big_bear_unique>
+                <campaign_unique></campaign_unique>
+                <confirm></confirm>
+                <big_bear_unique></big_bear_unique>
             </identifiers>
         </twoperformant-identifiers>
         <twoperformant-commissions>

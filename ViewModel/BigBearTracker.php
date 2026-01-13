@@ -56,6 +56,13 @@ class BigBearTracker implements ArgumentInterface
      */
     public function getSlsUrl(): string
     {
+        $bigBearUnique = $this->config->getBigBearUnique();
+        
+        // If no big bear identifier, then return an empty string
+        if(empty($bigBearUnique)){
+            return '';
+        }
+        
         return $this->config->getSalesScriptUrl();
     }
 }

@@ -59,6 +59,13 @@ class ClickTrackingScriptRenderer implements ObserverInterface
      */
     public function execute(Observer $observer): void
     {
+        $bigBearUnique = $this->config->getBigBearUnique();
+
+        // If no big bear identifier, then don't add the click script
+        if(empty($bigBearUnique)){
+            return;
+        }
+
         try {
 
             // Get the click script URL

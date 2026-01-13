@@ -81,7 +81,7 @@ class TransactionInfo implements ArgumentInterface
 
         //get the special category commissions
         $specialCategoryCommissions = $categoryCommissionsEnabled ? $this->config->getCategoryCommissions() : [];
-        var_dump($specialCategoryCommissions ? $specialCategoryCommissions : 'no');
+        
         //get the special commission categories ids
         $specialCommissionCategoriesIds =array_keys($specialCategoryCommissions);
 

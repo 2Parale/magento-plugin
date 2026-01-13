@@ -45,9 +45,9 @@ class Config
     /**
      * Get the campaign unique identifier
      *
-     * @return string
+     * @return string|null
      */
-    public function getCampaignUnique(): string
+    public function getCampaignUnique(): ?string
     {
         
         return $this->scopeConfig->getValue(self::PATH_CAMPAIGN_UNIQUE);
@@ -56,9 +56,9 @@ class Config
     /**
      * Get the confirm identifier
      *
-     * @return string
+     * @return string|null
      */
-    public function getConfirm(): string
+    public function getConfirm(): ?string
     {
         return $this->scopeConfig->getValue(self::PATH_CONFIRM);
     }
@@ -66,9 +66,9 @@ class Config
     /**
      * Get the big bear unique identifier
      *
-     * @return string
+     * @return string|null
      */
-    public function getBigBearUnique(): string
+    public function getBigBearUnique(): ?string
     {
         return $this->scopeConfig->getValue(self::PATH_BIG_BEAR_UNIQUE);
     }

@@ -43,14 +43,21 @@ class PixelTracker implements ArgumentInterface
      */
     public function getIframeUrl(): string
     {
-        if (empty($this->transactionInfo)) {
-            return '';
-        }
-
+        
         // get the iframe base URL and the pixel identifiers from the config
         $iframeBaseUrl = $this->config->getIframeUrl();
         $campaignUnique = $this->config->getCampaignUnique();
         $confirm = $this->config->getConfirm();
+        
+        // If no campaign unique or confirm identifier, then return an empty string
+        if(empty($campaignUnique) || empty($confirm)){
+            return '';
+        }
+        
+        // If no transaction info, then return an empty string
+        if (empty($this->transactionInfo)) {
+            return '';
+        }
 
         // initialize the total value and the array that will hold the name of the items in the order
         $totalValue = 0;
