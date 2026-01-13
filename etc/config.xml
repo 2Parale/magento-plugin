@@ -6,6 +6,9 @@
                 <confirm></confirm>
                 <big_bear_unique></big_bear_unique>
             </identifiers>
+            <store_specific>
+                <brand_attribute_name>manufacturer</brand_attribute_name>
+            </store_specific>
         </twoperformant-identifiers>
         <twoperformant-commissions>
             <commissions>

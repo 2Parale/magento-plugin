@@ -81,7 +81,7 @@ class TransactionInfo implements ArgumentInterface
 
         //get the special category commissions
         $specialCategoryCommissions = $categoryCommissionsEnabled ? $this->config->getCategoryCommissions() : [];
-        
+
         //get the special commission categories ids
         $specialCommissionCategoriesIds =array_keys($specialCategoryCommissions);
 
@@ -115,18 +115,19 @@ class TransactionInfo implements ArgumentInterface
             }
 
             // get the brand attribute and the brand value
-            $brandAttribute = $product->getResource()->getAttribute('brand');
+            $brandAttributeName = $this->config->getBrandAttributeName();
+            $brandAttribute = $product->getResource()->getAttribute($brandAttributeName);
             $brand = null;
 
             // if the brand attribute uses a source (Dropdown/Multiselect), get the brand value
             if ($brandAttribute && $brandAttribute->usesSource()) {
                 // Safe to call getAttributeText only if it uses a source (Dropdown/Multiselect)
-                $brand = $product->getAttributeText('brand');
+                $brand = $product->getAttributeText($brandAttributeName);
             }
             
             // If null (e.g., it's a text attribute, not a dropdown), get the raw value
             if ($brand === null) {
-                $brand = $product->getData('brand');
+                $brand = $product->getData($brandAttributeName);
             }
 
             // Handle cases where brand might be an array (multiselect)

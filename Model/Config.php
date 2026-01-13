@@ -19,6 +19,7 @@ class Config
     private const PATH_CAMPAIGN_UNIQUE = 'twoperformant-identifiers/identifiers/campaign_unique';
     private const PATH_CONFIRM = 'twoperformant-identifiers/identifiers/confirm';
     private const PATH_BIG_BEAR_UNIQUE = 'twoperformant-identifiers/identifiers/big_bear_unique';
+    private const PATH_BRAND_ATTRIBUTE_NAME = 'twoperformant-identifiers/store_specific/brand_attribute_name';
     private const PATH_BIG_BEAR_PARAMS = 'twoperformant/params/big_bear_params';
     private const PATH_IFRAME_URL = 'twoperformant/urls/iframe_url';
     private const PATH_CLICK_SCRIPT_URL = 'twoperformant/urls/click_script_url';
@@ -61,6 +62,16 @@ class Config
     public function getConfirm(): ?string
     {
         return $this->scopeConfig->getValue(self::PATH_CONFIRM);
+    }
+
+    /**
+     * Get the brand attribute name
+     *
+     * @return string|null
+     */
+    public function getBrandAttributeName(): ?string
+    {
+        return $this->scopeConfig->getValue(self::PATH_BRAND_ATTRIBUTE_NAME);
     }
 
     /**
