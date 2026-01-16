@@ -196,12 +196,18 @@ class TransactionInfo implements ArgumentInterface
                 }
             }
 
+            // calculate net value with discount
+            $discountAmount = (float) $item->getDiscountAmount();
+            $qtyOrdered = (int) $item->getQtyOrdered();
+            $unitDiscount = $qtyOrdered > 0 ? $discountAmount / $qtyOrdered : 0.0;
+            $netValue = (float)$item->getPrice() - $unitDiscount;
+
             // build item
             $itemData = [
                 'product_id' => (string) $item->getProductId(),
                 'name' => (string) $item->getName(),
-                'quantity' => (int) $item->getQtyOrdered(),
-                'value' => number_format((float)$item->getPrice(), 2, '.', ''),
+                'quantity' => $qtyOrdered,
+                'value' => number_format($netValue, 2, '.', ''),
                 'category_name' => $itemCategoryNames,
                 'brand' => $brand ? (string) $brand : '',
             ];
