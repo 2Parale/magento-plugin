@@ -70,7 +70,8 @@ class TransactionInfo implements ArgumentInterface
 
         // get the order id, the time it was placed and the currency code
         $id = (string) $order->getIncrementId();
-        $placedAt = (string) (int) strtotime($order->getCreatedAt());
+        $createdAt = $order->getCreatedAt();
+        $placedAt = $createdAt ? (string) (int) strtotime($createdAt) : '0';
         $currencyCode = (string) $order->getOrderCurrencyCode();
 
         // return the transaction info to be used by the view models
