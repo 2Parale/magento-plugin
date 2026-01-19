@@ -51,6 +51,7 @@ namespace Magento\Sales\Model {
             public function getCreatedAt() {}
             public function getOrderCurrencyCode() {}
             public function getItems() {}
+            public function getAllVisibleItems() {}
         }
     }
 }
@@ -59,6 +60,7 @@ namespace Magento\Sales\Model\Order {
     if (!class_exists('Magento\Sales\Model\Order\Item')) {
         class Item {
             public function getPrice() {}
+            public function getDiscountAmount() {}
             public function getProduct() {}
             public function getProductId() {}
             public function getName() {}
@@ -70,6 +72,8 @@ namespace Magento\Sales\Model\Order {
 namespace Magento\Catalog\Model {
     if (!class_exists('Magento\Catalog\Model\Product')) {
         class Product {
+            public function getId() {}
+            public function getCategoryIds() {}
             public function getCategoryCollection() {}
             public function getResource() {}
             public function getAttributeText($attributeCode) {}
@@ -79,6 +83,7 @@ namespace Magento\Catalog\Model {
 
     if (!class_exists('Magento\Catalog\Model\Category')) {
         class Category {
+            public function getId() {}
             public function getName() {}
         }
     }
@@ -105,7 +110,14 @@ namespace Magento\Catalog\Model\ResourceModel\Category {
         // Must implement IteratorAggregate to allow iteration in foreach loops within tests
         class Collection implements \IteratorAggregate {
             public function addAttributeToSelect($attribute) {}
+            public function addIdFilter($ids) {}
             public function getIterator(): \Traversable { return new \ArrayIterator([]); }
+        }
+    }
+
+    if (!class_exists('Magento\Catalog\Model\ResourceModel\Category\CollectionFactory')) {
+        class CollectionFactory {
+            public function create() {}
         }
     }
 }
@@ -151,3 +163,22 @@ namespace Psr\Log {
         }
     }
 }
+
+namespace Magento\Catalog\Model\ResourceModel\Product {
+    if (!class_exists('Magento\Catalog\Model\ResourceModel\Product\Collection')) {
+        class Collection implements \IteratorAggregate {
+            public function addAttributeToSelect($attribute) {}
+            public function addIdFilter($ids) {}
+            public function getIterator(): \Traversable { return new \ArrayIterator([]); }
+        }
+    }
+}
+
+namespace Magento\Catalog\Model\ResourceModel\Product {
+    if (!class_exists('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory')) {
+        class CollectionFactory {
+            public function create() {}
+        }
+    }
+}
+

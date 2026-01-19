@@ -52,6 +52,7 @@ class BigBearTrackerTest extends TestCase
     {
         // Transaction info is not used in getSlsUrl, but constructor calls it.
         $this->transactionInfoMock->method('getTransactionInfo')->willReturn([]);
+        $this->configMock->method('getBigBearUnique')->willReturn('TEST_ID_123');
         
         $expectedUrl = 'https://example.com/sales-script';
         $this->configMock->method('getSalesScriptUrl')->willReturn($expectedUrl);

@@ -5,13 +5,15 @@ namespace TwoPerformant\BusinessLeagueMarketing\Test\Unit\Model;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TwoPerformant\BusinessLeagueMarketing\Model\TransactionInfo;
+use TwoPerformant\BusinessLeagueMarketing\Model\Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
-use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Category\Collection as CategoryCollection;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\Category;
 
 class TransactionInfoTest extends TestCase
@@ -22,6 +24,21 @@ class TransactionInfoTest extends TestCase
     private $checkoutSessionMock;
 
     /**
+     * @var Config|MockObject
+     */
+    private $configMock;
+
+    /**
+     * @var ProductCollectionFactory|MockObject
+     */
+    private $productCollectionFactoryMock;
+
+    /**
+     * @var CategoryCollectionFactory|MockObject
+     */
+    private $categoryCollectionFactoryMock;
+
+    /**
      * @var TransactionInfo
      */
     private $transactionInfo;
@@ -29,7 +46,16 @@ class TransactionInfoTest extends TestCase
     protected function setUp(): void
     {
         $this->checkoutSessionMock = $this->createMock(CheckoutSession::class);
-        $this->transactionInfo = new TransactionInfo($this->checkoutSessionMock);
+        $this->configMock = $this->createMock(Config::class);
+        $this->productCollectionFactoryMock = $this->createMock(ProductCollectionFactory::class);
+        $this->categoryCollectionFactoryMock = $this->createMock(CategoryCollectionFactory::class);
+
+        $this->transactionInfo = new TransactionInfo(
+            $this->checkoutSessionMock,
+            $this->configMock,
+            $this->productCollectionFactoryMock,
+            $this->categoryCollectionFactoryMock
+        );
     }
 
     public function testGetTransactionInfoReturnsNullWhenNoOrder()
@@ -46,6 +72,8 @@ class TransactionInfoTest extends TestCase
      */
     public function testGetTransactionInfoWithOrderAndSourceBrand()
     {
+        $this->configMock->method('getBrandAttributeName')->willReturn('brand');
+
         // 1. Mock Order
         $orderMock = $this->createMock(Order::class);
         $this->checkoutSessionMock->expects($this->once())
@@ -58,38 +86,46 @@ class TransactionInfoTest extends TestCase
 
         // 2. Mock Item
         $itemMock = $this->createMock(Item::class);
-        $orderMock->expects($this->once())->method('getItems')->willReturn([$itemMock]);
+        $orderMock->expects($this->once())->method('getAllVisibleItems')->willReturn([$itemMock]);
 
         $itemMock->method('getPrice')->willReturn(100.00);
+        $itemMock->method('getDiscountAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('99');
         $itemMock->method('getName')->willReturn('Test Product');
         $itemMock->method('getQtyOrdered')->willReturn(2);
 
-        // 3. Mock Product
-        $productMock = $this->createMock(Product::class);
-        $itemMock->expects($this->once())->method('getProduct')->willReturn($productMock);
+        // 3. Mock Product Collection + Product
+        $productCollectionMock = $this->createMock(ProductCollection::class);
+        $this->productCollectionFactoryMock->expects($this->once())
+            ->method('create')
+            ->willReturn($productCollectionMock);
 
-        // 4. Mock Categories
+        $productCollectionMock->method('addAttributeToSelect')->willReturnSelf();
+        $productCollectionMock->method('addIdFilter')->willReturnSelf();
+
+        $productMock = $this->createMock(Product::class);
+        $productMock->method('getId')->willReturn(99);
+        $productMock->method('getCategoryIds')->willReturn([7]);
+        $productMock->method('getAttributeText')->with('brand')->willReturn('Sony');
+
+        $productCollectionMock->method('getIterator')
+            ->willReturn(new \ArrayIterator([$productMock]));
+
+        // 4. Mock Category Collection
         $categoryCollectionMock = $this->createMock(CategoryCollection::class);
-        $productMock->expects($this->once())->method('getCategoryCollection')->willReturn($categoryCollectionMock);
+        $this->categoryCollectionFactoryMock->expects($this->once())
+            ->method('create')
+            ->willReturn($categoryCollectionMock);
+
+        $categoryCollectionMock->method('addAttributeToSelect')->willReturnSelf();
+        $categoryCollectionMock->method('addIdFilter')->willReturnSelf();
 
         $categoryMock = $this->createMock(Category::class);
+        $categoryMock->method('getId')->willReturn(7);
         $categoryMock->method('getName')->willReturn('Electronics');
 
-        // Setup Iterator for Collection to return our category mock
         $categoryCollectionMock->method('getIterator')
             ->willReturn(new \ArrayIterator([$categoryMock]));
-
-        // 5. Mock Brand (Source Attribute)
-        $resourceMock = $this->createMock(ProductResource::class);
-        $productMock->expects($this->once())->method('getResource')->willReturn($resourceMock);
-
-        $attributeMock = $this->createMock(Attribute::class);
-        $resourceMock->expects($this->once())->method('getAttribute')->with('brand')->willReturn($attributeMock);
-        
-        // Brand uses source (e.g. Dropdown)
-        $attributeMock->method('usesSource')->willReturn(true);
-        $productMock->expects($this->once())->method('getAttributeText')->with('brand')->willReturn('Sony');
 
         // Execute
         $result = $this->transactionInfo->getTransactionInfo();
@@ -97,9 +133,9 @@ class TransactionInfoTest extends TestCase
         // Assertions
         $this->assertIsArray($result);
         $this->assertEquals('10000001', $result['id']);
-        $this->assertEquals(strtotime('2023-01-01 12:00:00'), $result['placed_at']);
+        $this->assertEquals((string) strtotime('2023-01-01 12:00:00'), $result['placed_at']);
         $this->assertEquals('USD', $result['currency_code']);
-        
+
         $this->assertCount(1, $result['items']);
         $item = $result['items'][0];
         $this->assertEquals('99', $item['product_id']);
@@ -115,31 +151,35 @@ class TransactionInfoTest extends TestCase
      */
     public function testGetTransactionInfoWithTextBrand()
     {
+        $this->configMock->method('getBrandAttributeName')->willReturn('brand');
+
         $orderMock = $this->createMock(Order::class);
         $this->checkoutSessionMock->method('getLastRealOrder')->willReturn($orderMock);
 
         $itemMock = $this->createMock(Item::class);
-        $orderMock->method('getItems')->willReturn([$itemMock]);
-        
+        $orderMock->method('getAllVisibleItems')->willReturn([$itemMock]);
+
+        $itemMock->method('getPrice')->willReturn(50.00);
+        $itemMock->method('getDiscountAmount')->willReturn(0.0);
+        $itemMock->method('getProductId')->willReturn('99');
+        $itemMock->method('getName')->willReturn('Test Product');
+        $itemMock->method('getQtyOrdered')->willReturn(1);
+
+        $productCollectionMock = $this->createMock(ProductCollection::class);
+        $this->productCollectionFactoryMock->method('create')
+            ->willReturn($productCollectionMock);
+
+        $productCollectionMock->method('addAttributeToSelect')->willReturnSelf();
+        $productCollectionMock->method('addIdFilter')->willReturnSelf();
+
         $productMock = $this->createMock(Product::class);
-        $itemMock->method('getProduct')->willReturn($productMock);
-        
-        // Mock empty categories
-        $categoryCollectionMock = $this->createMock(CategoryCollection::class);
-        $categoryCollectionMock->method('getIterator')->willReturn(new \ArrayIterator([]));
-        $productMock->method('getCategoryCollection')->willReturn($categoryCollectionMock);
+        $productMock->method('getId')->willReturn(99);
+        $productMock->method('getCategoryIds')->willReturn([]);
+        $productMock->method('getAttributeText')->with('brand')->willReturn(null);
+        $productMock->method('getData')->with('brand')->willReturn('Generic Brand');
 
-        // Mock Brand (Text Attribute)
-        $resourceMock = $this->createMock(ProductResource::class);
-        $productMock->method('getResource')->willReturn($resourceMock);
-
-        $attributeMock = $this->createMock(Attribute::class);
-        $resourceMock->method('getAttribute')->with('brand')->willReturn($attributeMock);
-
-        // Brand does NOT use source
-        $attributeMock->method('usesSource')->willReturn(false);
-        // Should fetch via getData
-        $productMock->expects($this->once())->method('getData')->with('brand')->willReturn('Generic Brand');
+        $productCollectionMock->method('getIterator')
+            ->willReturn(new \ArrayIterator([$productMock]));
 
         $result = $this->transactionInfo->getTransactionInfo();
 
