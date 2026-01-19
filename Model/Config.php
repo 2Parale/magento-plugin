@@ -16,17 +16,17 @@ class Config
      *
      * @var string
      */
-    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant-identifiers/identifiers/campaign_unique';
-    private const PATH_CONFIRM = 'twoperformant-identifiers/identifiers/confirm';
-    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant-identifiers/identifiers/big_bear_unique';
-    private const PATH_BRAND_ATTRIBUTE_NAME = 'twoperformant-identifiers/store_specific/brand_attribute_name';
+    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant_identifiers/identifiers/campaign_unique';
+    private const PATH_CONFIRM = 'twoperformant_identifiers/identifiers/confirm';
+    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant_identifiers/identifiers/big_bear_unique';
+    private const PATH_BRAND_ATTRIBUTE_NAME = 'twoperformant_identifiers/store_specific/brand_attribute_name';
     private const PATH_BIG_BEAR_PARAMS = 'twoperformant/params/big_bear_params';
     private const PATH_IFRAME_URL = 'twoperformant/urls/iframe_url';
     private const PATH_CLICK_SCRIPT_URL = 'twoperformant/urls/click_script_url';
     private const PATH_SALES_SCRIPT_URL = 'twoperformant/urls/sales_script_url';
-    private const PATH_DEFAULT_COMMISSION_VALUE = 'twoperformant-commissions/commissions/category_commissions_default_commission';
-    private const PATH_CATEGORY_COMMISSIONS_ENABLED = 'twoperformant-commissions/commissions/category_commissions_enabled';
-    private const PATH_CATEGORY_COMMISSIONS = 'twoperformant-commissions/commissions/category_commissions';
+    private const PATH_DEFAULT_COMMISSION_VALUE = 'twoperformant_commissions/commissions/category_commissions_default_commission';
+    private const PATH_CATEGORY_COMMISSIONS_ENABLED = 'twoperformant_commissions/commissions/category_commissions_enabled';
+    private const PATH_CATEGORY_COMMISSIONS = 'twoperformant_commissions/commissions/category_commissions';
 
     /**
      * @var ScopeConfigInterface

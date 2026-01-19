@@ -1,6 +1,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <twoperformant-identifiers>
+        <twoperformant_identifiers>
             <identifiers>
                 <campaign_unique></campaign_unique>
                 <confirm></confirm>
@@ -9,14 +9,14 @@
             <store_specific>
                 <brand_attribute_name>manufacturer</brand_attribute_name>
             </store_specific>
-        </twoperformant-identifiers>
-        <twoperformant-commissions>
+        </twoperformant_identifiers>
+        <twoperformant_commissions>
             <commissions>
                 <category_commissions_enabled>0</category_commissions_enabled>
                 <category_commissions_default_commission>0</category_commissions_default_commission>
                 <category_commissions>[]</category_commissions>
             </commissions>
-        </twoperformant-commissions>
+        </twoperformant_commissions>
         <twoperformant>
             <params>
                 <big_bear_params>["2pau","2ptt","2ptu","2prp","2pdlst"]</big_bear_params>
