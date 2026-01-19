@@ -50,7 +50,7 @@ class PixelTracker implements ArgumentInterface
         $confirm = $this->config->getConfirm();
         
         // If no campaign unique or confirm identifier, then return an empty string
-        if(empty($campaignUnique) || empty($confirm)){
+        if (empty($campaignUnique) || empty($confirm)) {
             return '';
         }
         

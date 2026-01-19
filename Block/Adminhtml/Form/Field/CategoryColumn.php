@@ -17,6 +17,13 @@ class CategoryColumn extends Select
      */
     private $categoryCollectionFactory;
 
+    /**
+     * Constructor
+     *
+     * @param Context $context
+     * @param CollectionFactory $categoryCollectionFactory
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         CollectionFactory $categoryCollectionFactory,

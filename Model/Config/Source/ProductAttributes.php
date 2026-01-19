@@ -12,9 +12,22 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ProductAttributes implements OptionSourceInterface
 {
+    /**
+     * @var CollectionFactory
+     */
     private CollectionFactory $attributeCollectionFactory;
+
+    /**
+     * @var StoreManagerInterface
+     */
     private StoreManagerInterface $storeManager;
 
+    /**
+     * Constructor
+     *
+     * @param CollectionFactory $attributeCollectionFactory
+     * @param StoreManagerInterface $storeManager
+     */
     public function __construct(
         CollectionFactory $attributeCollectionFactory,
         StoreManagerInterface $storeManager
@@ -23,6 +36,11 @@ class ProductAttributes implements OptionSourceInterface
         $this->storeManager = $storeManager;
     }
 
+    /**
+     * Get the options for the product attributes
+     *
+     * @return array
+     */
     public function toOptionArray(): array
     {
         $storeId = (int)$this->storeManager->getStore()->getId();

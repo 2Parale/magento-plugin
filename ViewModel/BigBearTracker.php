@@ -59,7 +59,7 @@ class BigBearTracker implements ArgumentInterface
         $bigBearUnique = $this->config->getBigBearUnique();
         
         // If no big bear identifier, then return an empty string
-        if(empty($bigBearUnique)){
+        if (empty($bigBearUnique)) {
             return '';
         }
         

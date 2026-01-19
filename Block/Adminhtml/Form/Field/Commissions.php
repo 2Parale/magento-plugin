@@ -4,7 +4,7 @@ namespace TwoPerformant\BusinessLeagueMarketing\Block\Adminhtml\Form\Field;
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Framework\DataObject;
 
-use TwoPerformant\BusinessLeagueMarketing\Block\Adminhtml\Form\Field\CategoryColumn;    
+use TwoPerformant\BusinessLeagueMarketing\Block\Adminhtml\Form\Field\CategoryColumn;
 
 /**
  * Commissions block for the category commissions list

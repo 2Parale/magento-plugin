@@ -7,7 +7,6 @@ use TwoPerformant\BusinessLeagueMarketing\Model\Config;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 
-
 /**
  * TransactionInfo model for the BusinessLeagueMarketing module
  *
@@ -35,7 +34,6 @@ class TransactionInfo implements ArgumentInterface
      */
     private $categoryCollectionFactory;
 
-
     /**
      * Constructor
      *
@@ -44,8 +42,20 @@ class TransactionInfo implements ArgumentInterface
      * @param ProductCollectionFactory $productCollectionFactory
      * @param CategoryCollectionFactory $categoryCollectionFactory
      */
-    public function __construct(CheckoutSession $checkoutSession, Config $config, ProductCollectionFactory $productCollectionFactory, CategoryCollectionFactory $categoryCollectionFactory)
-    {
+    public function __construct(
+        CheckoutSession $checkoutSession,
+        Config $config,
+        ProductCollectionFactory $productCollectionFactory,
+        CategoryCollectionFactory $categoryCollectionFactory
+    ) {
+        /**
+         * Constructor
+         *
+         * @param CheckoutSession $checkoutSession
+         * @param Config $config
+         * @param ProductCollectionFactory $productCollectionFactory
+         * @param CategoryCollectionFactory $categoryCollectionFactory
+         */
         $this->checkoutSession = $checkoutSession;
         $this->config = $config;
         $this->productCollectionFactory = $productCollectionFactory;
