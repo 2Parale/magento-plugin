@@ -92,8 +92,8 @@ class Config
     public function getBigBearParams(): array
     {
         $paramsString = $this->scopeConfig->getValue(self::PATH_BIG_BEAR_PARAMS);
-        $paramsArray = json_decode($paramsString, true);
-        return $paramsArray;
+        $paramsArray = json_decode($paramsString ?? '', true);
+        return $paramsArray ?? [];
     }
 
     /**
@@ -115,7 +115,7 @@ class Config
     {
         $clickUrlPattern = $this->scopeConfig->getValue(self::PATH_CLICK_SCRIPT_URL);
         $bigBearUnique = $this->getBigBearUnique();
-        $clickUrl = str_replace('__replace_me__', $bigBearUnique, $clickUrlPattern);
+        $clickUrl = str_replace('__replace_me__', $bigBearUnique ?? '', $clickUrlPattern ?? '');
         return $clickUrl;
     }
 
@@ -128,7 +128,7 @@ class Config
     {
         $salesScriptUrlPattern = $this->scopeConfig->getValue(self::PATH_SALES_SCRIPT_URL);
         $bigBearUnique = $this->getBigBearUnique();
-        $salesScriptUrl = str_replace('__replace_me__', $bigBearUnique, $salesScriptUrlPattern);
+        $salesScriptUrl = str_replace('__replace_me__', $bigBearUnique ?? '', $salesScriptUrlPattern ?? '');
         return $salesScriptUrl;
     }
 
@@ -139,7 +139,7 @@ class Config
      */
     public function getDefaultCommissionValue(): float
     {
-        return $this->scopeConfig->getValue(self::PATH_DEFAULT_COMMISSION_VALUE);
+        return $this->scopeConfig->getValue(self::PATH_DEFAULT_COMMISSION_VALUE) ?? 0.0;
     }
 
     /**
@@ -149,7 +149,7 @@ class Config
      */
     public function getCategoryCommissionsEnabled(): bool
     {
-        return $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS_ENABLED);
+        return $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS_ENABLED) ?? false;
     }
 
     /**
@@ -160,7 +160,7 @@ class Config
     public function getCategoryCommissions(): array
     {
         $categoryCommissionsString = $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS);
-        $categoryCommissionsArray = json_decode($categoryCommissionsString, true);
+        $categoryCommissionsArray = json_decode($categoryCommissionsString ?? '', true);
         
         // Handle null/empty case
         if (!is_array($categoryCommissionsArray)) {

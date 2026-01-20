@@ -182,3 +182,70 @@ namespace Magento\Catalog\Model\ResourceModel\Product {
     }
 }
 
+namespace Magento\Framework\Model{
+    if (!class_exists('Magento\Framework\Model\Context')) {
+        class Context {
+            public function __construct() {}
+        }
+    }
+}
+
+namespace Magento\Framework{
+    if(!class_exists('Magento\Framework\Registry')) {
+        class Registry {
+            public function __construct() {}
+        }
+    }
+}
+
+namespace Magento\Framework\App\Cache {
+    if (!interface_exists('Magento\Framework\App\Cache\TypeListInterface')) {
+        interface TypeListInterface {
+            public function clean($type);
+        }
+    }
+}
+
+namespace Magento\Framework\Serialize {
+    if (!interface_exists('Magento\Framework\Serialize\SerializerInterface')) {
+        interface SerializerInterface {
+            public function serialize($data);
+            public function unserialize($data);
+        }
+    }
+}
+
+namespace Magento\Config\Model\Config\Backend\Serialized {
+    if (!class_exists('Magento\Config\Model\Config\Backend\Serialized\ArraySerialized')) {
+        class ArraySerialized {
+            protected $value;
+
+            public function setValue($value) {
+                $this->value = $value;
+                return $this;
+            }
+
+            public function getValue() {
+                return $this->value;
+            }
+
+            public function beforeSave() {
+                return $this;
+            }
+        }
+    }
+}
+
+namespace Magento\Framework\Exception {
+    if (!class_exists('Magento\Framework\Exception\ValidatorException')) {
+        class ValidatorException extends \Exception {}
+    }
+}
+
+namespace TwoPerformant\BusinessLeagueMarketing\Model\Config\Backend {
+    if (!function_exists(__NAMESPACE__ . '\\__')) {
+        function __($text) {
+            return $text;
+        }
+    }
+}
