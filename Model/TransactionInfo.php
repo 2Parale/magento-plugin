@@ -48,14 +48,6 @@ class TransactionInfo implements ArgumentInterface
         ProductCollectionFactory $productCollectionFactory,
         CategoryCollectionFactory $categoryCollectionFactory
     ) {
-        /**
-         * Constructor
-         *
-         * @param CheckoutSession $checkoutSession
-         * @param Config $config
-         * @param ProductCollectionFactory $productCollectionFactory
-         * @param CategoryCollectionFactory $categoryCollectionFactory
-         */
         $this->checkoutSession = $checkoutSession;
         $this->config = $config;
         $this->productCollectionFactory = $productCollectionFactory;
