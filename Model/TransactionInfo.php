@@ -114,11 +114,18 @@ class TransactionInfo implements ArgumentInterface
         $brandAttributeName = $this->config->getBrandAttributeName();
         $productCollection = $this->productCollectionFactory->create();
         $productCollection->addAttributeToSelect('name');
-        $productCollection->addAttributeToSelect('category_ids');
+
         if ($brandAttributeName) {
             $productCollection->addAttributeToSelect($brandAttributeName);
         }
         $productCollection->addIdFilter($productIds);
+
+        // if the existing Magento version has the method addCategoryIds,
+        // use it in order to completely avoid the N+1 query problem with getting category ids
+        if (method_exists($productCollection, 'addCategoryIds')) {
+            $productCollection->addCategoryIds();
+        }
+
         
         // map loaded products by ID for easy lookup
         $loadedProducts = [];
