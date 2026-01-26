@@ -39,7 +39,6 @@ class CategoryCommissionsTest extends TestCase
 
     public function testBeforeSaveRejectsNonNumericCommission(): void
     {
-        print_r('testBeforeSaveRejectsNonNumericCommission');
         $this->model->setValue([
             'row_1' => ['category_id' => '12', 'commission_value' => 'abc'],
         ]);

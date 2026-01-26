@@ -125,7 +125,6 @@ class TransactionInfo implements ArgumentInterface
         if (method_exists($productCollection, 'addCategoryIds')) {
             $productCollection->addCategoryIds();
         }
-
         
         // map loaded products by ID for easy lookup
         $loadedProducts = [];

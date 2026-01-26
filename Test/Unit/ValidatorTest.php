@@ -30,7 +30,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testValidateCickScriptReturnsFalseForNonClickScriptUrl()
+    public function testValidateClickScriptReturnsFalseForNonClickScriptUrl()
     {
         $validator = new Validator();
         $result = $validator->validateClickScriptUrl('https://attr-2p.com/foobar/1.js');
@@ -38,7 +38,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testValidateCickScriptReturnsFalseForNonHttpsUrl()
+    public function testValidateClickScriptReturnsFalseForNonHttpsUrl()
     {
         $validator = new Validator();
         $result = $validator->validateClickScriptUrl('http://attr-2p.com/clc/1.js');
