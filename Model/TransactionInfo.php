@@ -165,7 +165,7 @@ class TransactionInfo implements ArgumentInterface
             
             // resolve categories names and commissions
             $itemCategoryNames = [];
-            $commissionValue = 101; // Logic from your original code
+            $commissionValue = null;
             
             $productCatIds = $product->getCategoryIds();
             foreach ($productCatIds as $catId) {
@@ -175,9 +175,9 @@ class TransactionInfo implements ArgumentInterface
                 }
                 
                 // check if the category is in the special commission categories
-                if (in_array($catId, $specialCommissionCategoriesIds)) {
+                if ($categoryCommissionsEnabled && in_array($catId, $specialCommissionCategoriesIds, true)) {
                     $catCommission = $specialCategoryCommissions[$catId];
-                    if ($catCommission < $commissionValue) {
+                    if ($commissionValue === null || $catCommission < $commissionValue) {
                         $commissionValue = $catCommission;
                     }
                 }
@@ -216,7 +216,9 @@ class TransactionInfo implements ArgumentInterface
             ];
 
             if ($categoryCommissionsEnabled) {
-                $commission = $commissionValue < 101 ? $commissionValue : $this->config->getDefaultCommissionValue();
+                $commission = $commissionValue !== null
+                    ? $commissionValue
+                    : (float) $this->config->getDefaultCommissionValue();
                 $itemData['commission_percent'] = (float) $commission;
             }
 
