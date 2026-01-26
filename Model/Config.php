@@ -46,42 +46,42 @@ class Config
     /**
      * Get the campaign unique identifier
      *
-     * @return string|null
+     * @return string
      */
-    public function getCampaignUnique(): ?string
+    public function getCampaignUnique(): string
     {
         
-        return $this->scopeConfig->getValue(self::PATH_CAMPAIGN_UNIQUE);
+        return (string) $this->scopeConfig->getValue(self::PATH_CAMPAIGN_UNIQUE) ?? '';
     }
 
     /**
      * Get the confirm identifier
      *
-     * @return string|null
+     * @return string
      */
-    public function getConfirm(): ?string
+    public function getConfirm(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_CONFIRM);
+        return (string) $this->scopeConfig->getValue(self::PATH_CONFIRM) ?? '';
     }
 
     /**
      * Get the brand attribute name
      *
-     * @return string|null
+     * @return string
      */
-    public function getBrandAttributeName(): ?string
+    public function getBrandAttributeName(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_BRAND_ATTRIBUTE_NAME);
+        return (string) $this->scopeConfig->getValue(self::PATH_BRAND_ATTRIBUTE_NAME) ?? '';
     }
 
     /**
      * Get the big bear unique identifier
      *
-     * @return string|null
+     * @return string
      */
-    public function getBigBearUnique(): ?string
+    public function getBigBearUnique(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_BIG_BEAR_UNIQUE);
+        return (string) $this->scopeConfig->getValue(self::PATH_BIG_BEAR_UNIQUE) ?? '';
     }
     
     /**
@@ -103,7 +103,7 @@ class Config
      */
     public function getIframeUrl(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_IFRAME_URL);
+        return (string) $this->scopeConfig->getValue(self::PATH_IFRAME_URL) ?? '';
     }
 
     /**
@@ -139,7 +139,7 @@ class Config
      */
     public function getDefaultCommissionValue(): float
     {
-        return $this->scopeConfig->getValue(self::PATH_DEFAULT_COMMISSION_VALUE) ?? 0.0;
+        return (float) $this->scopeConfig->getValue(self::PATH_DEFAULT_COMMISSION_VALUE) ?? 0.0;
     }
 
     /**
@@ -149,7 +149,7 @@ class Config
      */
     public function getCategoryCommissionsEnabled(): bool
     {
-        return $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS_ENABLED) ?? false;
+        return (bool) ((int) ($this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS_ENABLED) ?? 0));
     }
 
     /**
