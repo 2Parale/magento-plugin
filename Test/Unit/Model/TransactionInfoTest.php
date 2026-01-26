@@ -133,7 +133,7 @@ class TransactionInfoTest extends TestCase
         // Assertions
         $this->assertIsArray($result);
         $this->assertEquals('10000001', $result['id']);
-        $this->assertEquals((string) strtotime('2023-01-01 12:00:00'), $result['placed_at']);
+        $this->assertEquals((int) strtotime('2023-01-01 12:00:00'), $result['placed_at']);
         $this->assertEquals('USD', $result['currency_code']);
 
         $this->assertCount(1, $result['items']);
