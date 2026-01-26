@@ -171,6 +171,11 @@ class Config
         $result = [];
         foreach ($categoryCommissionsArray as $row) {
             if (isset($row['category_id']) && isset($row['commission_value'])) {
+                $row['category_id'] = trim((string)($row['category_id']));
+                $row['commission_value'] = trim((string)($row['commission_value']));
+                if(!is_numeric($row['category_id']) || !is_numeric($row['commission_value'])) {
+                    continue;
+                }
                 // Convert commission_value to float/int if needed
                 $result[(int)$row['category_id']] = (float)$row['commission_value'];
             }
