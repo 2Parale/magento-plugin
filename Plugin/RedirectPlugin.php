@@ -75,7 +75,7 @@ class RedirectPlugin
 
         foreach ($bigBearParams as $param) {
             $value = $this->request->getParam($param);
-            
+
             if ($value !== null) {
                 
                 $paramsToAdd[$param] = $value;

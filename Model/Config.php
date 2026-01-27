@@ -16,13 +16,17 @@ class Config
      *
      * @var string
      */
-    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant/identifiers/campaign_unique';
-    private const PATH_CONFIRM = 'twoperformant/identifiers/confirm';
-    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant/identifiers/big_bear_unique';
+    private const PATH_CAMPAIGN_UNIQUE = 'twoperformant_identifiers/identifiers/campaign_unique';
+    private const PATH_CONFIRM = 'twoperformant_identifiers/identifiers/confirm';
+    private const PATH_BIG_BEAR_UNIQUE = 'twoperformant_identifiers/identifiers/big_bear_unique';
+    private const PATH_BRAND_ATTRIBUTE_NAME = 'twoperformant_identifiers/store_specific/brand_attribute_name';
     private const PATH_BIG_BEAR_PARAMS = 'twoperformant/params/big_bear_params';
     private const PATH_IFRAME_URL = 'twoperformant/urls/iframe_url';
     private const PATH_CLICK_SCRIPT_URL = 'twoperformant/urls/click_script_url';
     private const PATH_SALES_SCRIPT_URL = 'twoperformant/urls/sales_script_url';
+    private const PATH_DEFAULT_COMMISSION_VALUE = 'twoperformant_commissions/commissions/category_commissions_default_commission';
+    private const PATH_CATEGORY_COMMISSIONS_ENABLED = 'twoperformant_commissions/commissions/category_commissions_enabled';
+    private const PATH_CATEGORY_COMMISSIONS = 'twoperformant_commissions/commissions/category_commissions';
 
     /**
      * @var ScopeConfigInterface
@@ -47,7 +51,7 @@ class Config
     public function getCampaignUnique(): string
     {
         
-        return $this->scopeConfig->getValue(self::PATH_CAMPAIGN_UNIQUE);
+        return (string) $this->scopeConfig->getValue(self::PATH_CAMPAIGN_UNIQUE) ?? '';
     }
 
     /**
@@ -57,7 +61,17 @@ class Config
      */
     public function getConfirm(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_CONFIRM);
+        return (string) $this->scopeConfig->getValue(self::PATH_CONFIRM) ?? '';
+    }
+
+    /**
+     * Get the brand attribute name
+     *
+     * @return string
+     */
+    public function getBrandAttributeName(): string
+    {
+        return (string) $this->scopeConfig->getValue(self::PATH_BRAND_ATTRIBUTE_NAME) ?? '';
     }
 
     /**
@@ -67,7 +81,7 @@ class Config
      */
     public function getBigBearUnique(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_BIG_BEAR_UNIQUE);
+        return (string) $this->scopeConfig->getValue(self::PATH_BIG_BEAR_UNIQUE) ?? '';
     }
     
     /**
@@ -78,8 +92,8 @@ class Config
     public function getBigBearParams(): array
     {
         $paramsString = $this->scopeConfig->getValue(self::PATH_BIG_BEAR_PARAMS);
-        $paramsArray = json_decode($paramsString, true);
-        return $paramsArray;
+        $paramsArray = json_decode($paramsString ?? '', true);
+        return $paramsArray ?? [];
     }
 
     /**
@@ -89,7 +103,7 @@ class Config
      */
     public function getIframeUrl(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_IFRAME_URL);
+        return (string) $this->scopeConfig->getValue(self::PATH_IFRAME_URL) ?? '';
     }
 
     /**
@@ -101,7 +115,7 @@ class Config
     {
         $clickUrlPattern = $this->scopeConfig->getValue(self::PATH_CLICK_SCRIPT_URL);
         $bigBearUnique = $this->getBigBearUnique();
-        $clickUrl = str_replace('__replace_me__', $bigBearUnique, $clickUrlPattern);
+        $clickUrl = str_replace('__replace_me__', $bigBearUnique ?? '', $clickUrlPattern ?? '');
         return $clickUrl;
     }
 
@@ -114,7 +128,59 @@ class Config
     {
         $salesScriptUrlPattern = $this->scopeConfig->getValue(self::PATH_SALES_SCRIPT_URL);
         $bigBearUnique = $this->getBigBearUnique();
-        $salesScriptUrl = str_replace('__replace_me__', $bigBearUnique, $salesScriptUrlPattern);
+        $salesScriptUrl = str_replace('__replace_me__', $bigBearUnique ?? '', $salesScriptUrlPattern ?? '');
         return $salesScriptUrl;
+    }
+
+    /**
+     * Get the default commission value
+     *
+     * @return float
+     */
+    public function getDefaultCommissionValue(): float
+    {
+        return (float) $this->scopeConfig->getValue(self::PATH_DEFAULT_COMMISSION_VALUE) ?? 0.0;
+    }
+
+    /**
+     * Get the category commissions enabled
+     *
+     * @return bool
+     */
+    public function getCategoryCommissionsEnabled(): bool
+    {
+        return (bool) ((int) ($this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS_ENABLED) ?? 0));
+    }
+
+    /**
+     * Get the category commissions
+     *
+     * @return array
+     */
+    public function getCategoryCommissions(): array
+    {
+        $categoryCommissionsString = $this->scopeConfig->getValue(self::PATH_CATEGORY_COMMISSIONS);
+        $categoryCommissionsArray = json_decode($categoryCommissionsString ?? '', true);
+        
+        // Handle null/empty case
+        if (!is_array($categoryCommissionsArray)) {
+            return [];
+        }
+        
+        // Build a flat array: category_id => commission_value
+        $result = [];
+        foreach ($categoryCommissionsArray as $row) {
+            if (isset($row['category_id']) && isset($row['commission_value'])) {
+                $row['category_id'] = trim((string)($row['category_id']));
+                $row['commission_value'] = trim((string)($row['commission_value']));
+                if (!is_numeric($row['category_id']) || !is_numeric($row['commission_value'])) {
+                    continue;
+                }
+                // Convert commission_value to float/int if needed
+                $result[(int)$row['category_id']] = (float)$row['commission_value'];
+            }
+        }
+        
+        return $result;
     }
 }

@@ -3,6 +3,9 @@ namespace TwoPerformant\BusinessLeagueMarketing\Model;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use TwoPerformant\BusinessLeagueMarketing\Model\Config;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 
 /**
  * TransactionInfo model for the BusinessLeagueMarketing module
@@ -17,13 +20,38 @@ class TransactionInfo implements ArgumentInterface
     protected $checkoutSession;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var ProductCollectionFactory
+     */
+    private $productCollectionFactory;
+
+    /**
+     * @var CategoryCollectionFactory
+     */
+    private $categoryCollectionFactory;
+
+    /**
      * Constructor
      *
      * @param CheckoutSession $checkoutSession
+     * @param Config $config
+     * @param ProductCollectionFactory $productCollectionFactory
+     * @param CategoryCollectionFactory $categoryCollectionFactory
      */
-    public function __construct(CheckoutSession $checkoutSession)
-    {
+    public function __construct(
+        CheckoutSession $checkoutSession,
+        Config $config,
+        ProductCollectionFactory $productCollectionFactory,
+        CategoryCollectionFactory $categoryCollectionFactory
+    ) {
         $this->checkoutSession = $checkoutSession;
+        $this->config = $config;
+        $this->productCollectionFactory = $productCollectionFactory;
+        $this->categoryCollectionFactory = $categoryCollectionFactory;
     }
 
     /**
@@ -44,7 +72,8 @@ class TransactionInfo implements ArgumentInterface
 
         // get the order id, the time it was placed and the currency code
         $id = (string) $order->getIncrementId();
-        $placedAt = (string) (int) strtotime($order->getCreatedAt());
+        $createdAt = $order->getCreatedAt();
+        $placedAt = $createdAt ? (int) strtotime($createdAt) : 0;
         $currencyCode = (string) $order->getOrderCurrencyCode();
 
         // return the transaction info to be used by the view models
@@ -64,63 +93,144 @@ class TransactionInfo implements ArgumentInterface
      */
     private function processOrderItems(\Magento\Sales\Model\Order $order): array
     {
+        $itemsResult = [];
+        $orderItems = $order->getAllVisibleItems();
 
-        // initialize the items array
-        $items = [];
+        if (empty($orderItems)) {
+            return [];
+        }
 
-        // loop through the order items
-        foreach ($order->getItems() as $item) {
-            // get the price of the item without taxes
-            $value = $item->getPrice();
+        // gather all Product IDs from the order
+        $productIds = [];
+        foreach ($orderItems as $item) {
+            $productIds[] = $item->getProductId();
+        }
 
-            // get the product object
-            $product = $item->getProduct();
+        if (empty($productIds)) {
+            return [];
+        }
 
-            // get the category collection and load the category names
-            $categoryCollection = $product->getCategoryCollection();
+        // load all Products in one query (with name, category_ids and brand attributes)
+        $brandAttributeName = $this->config->getBrandAttributeName();
+        $productCollection = $this->productCollectionFactory->create();
+        $productCollection->addAttributeToSelect('name');
+
+        if ($brandAttributeName) {
+            $productCollection->addAttributeToSelect($brandAttributeName);
+        }
+        $productCollection->addIdFilter($productIds);
+
+        // if the existing Magento version has the method addCategoryIds,
+        // use it in order to completely avoid the N+1 query problem with getting category ids
+        if (method_exists($productCollection, 'addCategoryIds')) {
+            $productCollection->addCategoryIds();
+        }
+        
+        // map loaded products by ID for easy lookup
+        $loadedProducts = [];
+        $allCategoryIds = [];
+        
+        foreach ($productCollection as $product) {
+            $loadedProducts[$product->getId()] = $product;
+            
+            // collect Category IDs from the loaded product
+            $catIds = $product->getCategoryIds();
+            if (!empty($catIds)) {
+                $allCategoryIds = array_merge($allCategoryIds, $catIds);
+            }
+        }
+
+        // load all Categories in one query (ID => Name map)
+        $categoryNamesMap = [];
+        if (!empty($allCategoryIds)) {
+            $allCategoryIds = array_unique($allCategoryIds);
+            $categoryCollection = $this->categoryCollectionFactory->create();
             $categoryCollection->addAttributeToSelect('name');
-            // initialize the categories array
-            $categories = [];
-            // loop through the categories and add the names to the array
+            $categoryCollection->addIdFilter($allCategoryIds);
+            
             foreach ($categoryCollection as $category) {
-                if ($category->getName()) {
-                    $categories[] = $category->getName();
+                $categoryNamesMap[$category->getId()] = $category->getName();
+            }
+        }
+
+        // config data for loop
+        $categoryCommissionsEnabled = $this->config->getCategoryCommissionsEnabled();
+        $specialCategoryCommissions = $categoryCommissionsEnabled ? $this->config->getCategoryCommissions() : [];
+        $specialCommissionCategoriesIds = array_keys($specialCategoryCommissions);
+
+        // build final array
+        foreach ($orderItems as $item) {
+            $productId = $item->getProductId();
+            
+            // skip if product not found
+            if (!isset($loadedProducts[$productId])) {
+                continue;
+            }
+            
+            $product = $loadedProducts[$productId];
+            
+            // resolve categories names and commissions
+            $itemCategoryNames = [];
+            $commissionValue = null;
+            
+            $productCatIds = $product->getCategoryIds();
+            foreach ($productCatIds as $catId) {
+                // get name from the bulk-loaded map
+                if (isset($categoryNamesMap[$catId])) {
+                    $itemCategoryNames[] = $categoryNamesMap[$catId];
+                }
+                
+                // check if the category is in the special commission categories
+                if ($categoryCommissionsEnabled && in_array($catId, $specialCommissionCategoriesIds, true)) {
+                    $catCommission = $specialCategoryCommissions[$catId];
+                    if ($commissionValue === null || $catCommission < $commissionValue) {
+                        $commissionValue = $catCommission;
+                    }
                 }
             }
 
-            // get the brand attribute and the brand value
-            $brandAttribute = $product->getResource()->getAttribute('brand');
+            // resolve brand
             $brand = null;
-
-            // if the brand attribute uses a source (Dropdown/Multiselect), get the brand value
-            if ($brandAttribute && $brandAttribute->usesSource()) {
-                // Safe to call getAttributeText only if it uses a source (Dropdown/Multiselect)
-                $brand = $product->getAttributeText('brand');
-            }
-            
-            // If null (e.g., it's a text attribute, not a dropdown), get the raw value
-            if ($brand === null) {
-                $brand = $product->getData('brand');
-            }
-
-            // Handle cases where brand might be an array (multiselect)
-            if (is_array($brand)) {
-                $brand = implode(', ', $brand);
+            if ($brandAttributeName) {
+                // try to get text (for dropdowns)
+                $brand = $product->getAttributeText($brandAttributeName);
+                
+                // if not dropdown/text, get raw data
+                if (!$brand) {
+                    $brand = $product->getData($brandAttributeName);
+                }
+                
+                if (is_array($brand)) {
+                    $brand = implode(', ', $brand);
+                }
             }
 
-            // construct the array containing the item info and add it to the items array
-            $item = [
-                'product_id' =>(string) $item->getProductId(),
+            // calculate net value with discount
+            $discountAmount = (float) $item->getDiscountAmount();
+            $qtyOrdered = (int) $item->getQtyOrdered();
+            $unitDiscount = $qtyOrdered > 0 ? $discountAmount / $qtyOrdered : 0.0;
+            $netValue = (float)$item->getPrice() - $unitDiscount;
+
+            // build item
+            $itemData = [
+                'product_id' => (string) $item->getProductId(),
                 'name' => (string) $item->getName(),
-                'quantity' => (int) $item->getQtyOrdered(),
-                'value' => number_format((float)$value, 2, '.', ''),
-                'category_name' => $categories,
+                'quantity' => $qtyOrdered,
+                'value' => number_format($netValue, 2, '.', ''),
+                'category_name' => $itemCategoryNames,
                 'brand' => $brand ? (string) $brand : '',
             ];
-            $items[] = $item;
+
+            if ($categoryCommissionsEnabled) {
+                $commission = $commissionValue !== null
+                    ? $commissionValue
+                    : (float) $this->config->getDefaultCommissionValue();
+                $itemData['commission_percent'] = (float) $commission;
+            }
+
+            $itemsResult[] = $itemData;
         }
 
-        // return the items array to be included in the transaction info
-        return $items;
+        return $itemsResult;
     }
 }

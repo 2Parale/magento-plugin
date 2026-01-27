@@ -53,6 +53,9 @@ class ClickTrackingScriptRendererTest extends TestCase
         $this->configMock->expects($this->once())
             ->method('getClickScriptUrl')
             ->willReturn($url);
+        $this->configMock->expects($this->once())
+            ->method('getBigBearUnique')
+            ->willReturn('TEST_ID_123');
 
         $this->validatorMock->expects($this->once())
             ->method('validateClickScriptUrl')
@@ -80,6 +83,9 @@ class ClickTrackingScriptRendererTest extends TestCase
         $this->configMock->expects($this->once())
             ->method('getClickScriptUrl')
             ->willReturn($url);
+        $this->configMock->expects($this->once())
+            ->method('getBigBearUnique')
+            ->willReturn('TEST_ID_123');
 
         $this->validatorMock->expects($this->once())
             ->method('validateClickScriptUrl')
@@ -106,6 +112,9 @@ class ClickTrackingScriptRendererTest extends TestCase
         $this->configMock->expects($this->once())
             ->method('getClickScriptUrl')
             ->willThrowException($exception);
+        $this->configMock->expects($this->once())
+            ->method('getBigBearUnique')
+            ->willReturn('TEST_ID_123');
 
         $this->loggerMock->expects($this->once())
             ->method('error')
