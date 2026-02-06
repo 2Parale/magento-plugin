@@ -15,7 +15,7 @@ services:
       - MAGENTO_RUN_MODE=developer
     working_dir: /var/www/html
     volumes:
-      - ../:/var/www/html/packages/two-performant/business-league-marketing
+      - ../:/var/www/html/packages/2performant/business-league-marketing
       - ./install-config-mysql.php:/var/www/html/dev/tests/integration/etc/install-config-mysql.php
     command: >
       bash -lc '
@@ -44,8 +44,8 @@ services:
             --elasticsearch-index-prefix=magento \
             --elasticsearch-timeout=15
         fi
-        composer config repositories.local-module path /var/www/html/packages/two-performant/business-league-marketing
-        composer require two-performant/business-league-marketing:@dev
+        composer config repositories.local-module path /var/www/html/packages/2performant/business-league-marketing
+        composer require 2performant/business-league-marketing:@dev
         bin/magento module:enable TwoPerformant_BusinessLeagueMarketing
         bin/magento setup:upgrade
         bin/magento config:set system/smtp/disable 1

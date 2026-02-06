@@ -150,7 +150,7 @@ This project utilizes Magento's built-in testing framework, which is incorporate
 
     2. **Run the integration test suid**  
         ```bash
-        docker compose exec magento bash -c "cd dev/tests/integration && ../../../vendor/bin/phpunit ../../../vendor/two-performant/business-league-marketing/Test/Integration/"
+        docker compose exec magento bash -c "cd dev/tests/integration && ../../../vendor/bin/phpunit ../../../vendor/2performant/business-league-marketing/Test/Integration/"
         ```
 ###Unit Testing
 

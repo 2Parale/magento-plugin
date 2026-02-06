@@ -1,5 +1,5 @@
 {
-    "name": "two-performant/business-league-marketing",
+    "name": "2performant/business-league-marketing",
     "description": "Magento 2 plugin for injecting tracking scripts and iframe",
     "type": "magento2-module",
     "version": "1.0.0",
