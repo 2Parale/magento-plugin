@@ -217,7 +217,7 @@ class TransactionInfo implements ArgumentInterface
                 'name' => (string) $item->getName(),
                 'quantity' => $qtyOrdered,
                 'value' => number_format($netValue, 2, '.', ''),
-                'category_name' => $itemCategoryNames,
+                'category' => $itemCategoryNames,
                 'brand' => $brand ? (string) $brand : '',
             ];
 

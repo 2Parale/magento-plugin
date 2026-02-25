@@ -142,7 +142,7 @@ class TransactionInfoTest extends TestCase
         $this->assertEquals('Test Product', $item['name']);
         $this->assertEquals(2, $item['quantity']);
         $this->assertEquals('100.00', $item['value']); // Number format 2 decimals
-        $this->assertEquals(['Electronics'], $item['category_name']);
+        $this->assertEquals(['Electronics'], $item['category']);
         $this->assertEquals('Sony', $item['brand']);
     }
 

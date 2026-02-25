@@ -77,8 +77,9 @@ class PixelTracker implements ArgumentInterface
         $queryArgs = [
             'campaign_unique' => $campaignUnique,
             'confirm' => $confirm,
-            'value' => $totalValue,
+            'amount' => $totalValue,
             'description' => $description,
+            'transaction_id' => $this->transactionInfo['id']
         ];
 
         // generate the query string
