@@ -53,6 +53,7 @@ class PixelTrackerTest extends TestCase
         ];
 
         $transactionInfoData = [
+            'id' => '10000001',
             'items' => $items
         ];
 
@@ -76,8 +77,9 @@ class PixelTrackerTest extends TestCase
         $expectedQuery = http_build_query([
             'campaign_unique' => 'unique_campaign_id',
             'confirm' => 'confirm_code',
-            'value' => $expectedTotalValue,
+            'amount' => $expectedTotalValue,
             'description' => $expectedDescription,
+            'transaction_id' => '10000001'
         ]);
 
         $expectedUrl = 'https://example.com/iframe?' . $expectedQuery;

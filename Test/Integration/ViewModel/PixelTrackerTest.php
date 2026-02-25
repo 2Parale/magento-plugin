@@ -54,8 +54,9 @@ class PixelTrackerTest extends TestCase
 
         $this->assertSame('CAMP123', $query['campaign_unique'] ?? null);
         $this->assertSame('CONF123', $query['confirm'] ?? null);
-        $this->assertArrayHasKey('value', $query);
+        $this->assertArrayHasKey('amount', $query);
         $this->assertArrayHasKey('description', $query);
+        $this->assertArrayHasKey('transaction_id', $query);
     }
 
     protected function tearDown(): void
