@@ -156,8 +156,12 @@ class TransactionInfo implements ArgumentInterface
         // config data for loop
         $categoryCommissionsEnabled = $this->config->getCategoryCommissionsEnabled();
         $specialCategoryCommissions = $categoryCommissionsEnabled ? $this->config->getCategoryCommissions() : [];
-        $specialCommissionCategoriesIds = array_keys($specialCategoryCommissions);
-
+        
+        // normalize commission map keys to int
+        $specialCategoryCommissionsById = [];
+        foreach ($specialCategoryCommissions as $categoryId => $commission) {
+            $specialCategoryCommissionsById[(int)$categoryId] = (float)$commission;
+        }
         // build final array
         foreach ($orderItems as $item) {
             $productId = $item->getProductId();
@@ -174,15 +178,16 @@ class TransactionInfo implements ArgumentInterface
             $commissionValue = null;
             
             $productCatIds = $product->getCategoryIds();
-            foreach ($productCatIds as $catId) {
+            foreach ($productCatIds as $catIdRaw) {
+                $catId = (int)$catIdRaw;
                 // get name from the bulk-loaded map
                 if (isset($categoryNamesMap[$catId])) {
                     $itemCategoryNames[] = $categoryNamesMap[$catId];
                 }
                 
                 // check if the category is in the special commission categories
-                if ($categoryCommissionsEnabled && in_array($catId, $specialCommissionCategoriesIds, true)) {
-                    $catCommission = $specialCategoryCommissions[$catId];
+                if ($categoryCommissionsEnabled && isset($specialCategoryCommissionsById[$catId])) {
+                    $catCommission = $specialCategoryCommissionsById[$catId];
                     if ($commissionValue === null || $catCommission < $commissionValue) {
                         $commissionValue = $catCommission;
                     }
