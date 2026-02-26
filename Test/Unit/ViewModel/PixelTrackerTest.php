@@ -43,16 +43,19 @@ class PixelTrackerTest extends TestCase
             [
                 'name' => 'Product A',
                 'value' => 100.00,
-                'quantity' => 2
+                'quantity' => 2,
+                'commission_percent' => 10.00
             ],
             [
                 'name' => 'Product B',
                 'value' => 50.50,
-                'quantity' => 1
+                'quantity' => 1,
+                'commission_percent' => 10.00
             ]
         ];
 
         $transactionInfoData = [
+            'id' => '10000001',
             'items' => $items
         ];
 
@@ -62,6 +65,7 @@ class PixelTrackerTest extends TestCase
         $this->configMock->method('getIframeUrl')->willReturn('https://example.com/iframe');
         $this->configMock->method('getCampaignUnique')->willReturn('unique_campaign_id');
         $this->configMock->method('getConfirm')->willReturn('confirm_code');
+        $this->configMock->method('getCategoryCommissionsEnabled')->willReturn(true);
 
         // Instantiate
         $pixelTracker = new PixelTracker($this->transactionInfoMock, $this->configMock);
@@ -72,12 +76,15 @@ class PixelTrackerTest extends TestCase
         // Total: 250.50
         $expectedTotalValue = number_format(250.50, 2, '.', '');
         $expectedDescription = 'Product A, Product B';
+        $expectedCommissionPercentage = number_format(10, 2, '.', '');
 
         $expectedQuery = http_build_query([
             'campaign_unique' => 'unique_campaign_id',
             'confirm' => 'confirm_code',
-            'value' => $expectedTotalValue,
+            'amount' => $expectedTotalValue,
             'description' => $expectedDescription,
+            'transaction_id' => '10000001',
+            'com_percent' => $expectedCommissionPercentage
         ]);
 
         $expectedUrl = 'https://example.com/iframe?' . $expectedQuery;
