@@ -88,7 +88,7 @@ class PixelTracker implements ArgumentInterface
             'transaction_id' => $this->transactionInfo['id']
         ];
 
-        if($this->config->getCategoryCommissionsEnabled() && $totalValue > 0){
+        if ($this->config->getCategoryCommissionsEnabled() && $totalValue > 0) {
             $commissionPercentage = $commissionPercentage / $totalValue;
             $queryArgs['com_percent'] = number_format((float)$commissionPercentage, 2, '.', '');
         }
