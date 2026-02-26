@@ -70,7 +70,7 @@ class PixelTracker implements ArgumentInterface
             $totalValue += $value;
             $descriptionParts[] = (string)$item['name'];
             
-            if($this->config->getCategoryCommissionsEnabled()){
+            if ($this->config->getCategoryCommissionsEnabled()) {
                 $commissionPercentage += $value * (float)$item['commission_percent'];
             }
         }
