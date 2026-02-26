@@ -75,15 +75,14 @@ class PixelTracker implements ArgumentInterface
             }
         }
 
-        // generate the description string and format the total value as a float with 2 decimal places
+        // generate the description string 
         $description = implode(', ', $descriptionParts);
-        $totalValue = number_format((float)$totalValue, 2, '.', '');
 
         // construct the query arguments array
         $queryArgs = [
             'campaign_unique' => $campaignUnique,
             'confirm' => $confirm,
-            'amount' => $totalValue,
+            'amount' => number_format((float)$totalValue, 2, '.', ''), //format the total value as a float with 2 decimal places
             'description' => $description,
             'transaction_id' => $this->transactionInfo['id']
         ];
