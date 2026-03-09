@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \TwoPerformant\BusinessLeagueMarketing\ViewModel\CreditsViewModel $viewModel */
+$viewModel = $block->getData('view_model');
+
+$text = $viewModel->getText();
+$urlText = $viewModel->getUrlText();
+$url = $viewModel->getUrl();
+?>
+<?php if ($text && $urlText && $url): ?>
+    <style>
+        .twoperformant-credits {
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+    <div class="twoperformant-credits">
+        <?= $block->escapeHtml($text) ?>
+        <a href="<?= $block->escapeUrl($url) ?>"
+           target="_blank"
+           rel="sponsored noopener noreferrer">
+            <?= $block->escapeHtml($urlText) ?>
+        </a>
+    </div>
+<?php endif; ?>
