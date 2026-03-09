@@ -11,12 +11,6 @@ $urlText = $viewModel->getUrlText();
 $url = $viewModel->getUrl();
 ?>
 <?php if ($text && $urlText && $url): ?>
-    <style>
-        .twoperformant-credits {
-            text-align: center;
-            font-size: 12px;
-        }
-    </style>
     <div class="twoperformant-credits">
         <?= $block->escapeHtml($text) ?>
         <a href="<?= $block->escapeUrl($url) ?>"
