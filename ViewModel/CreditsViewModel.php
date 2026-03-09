@@ -31,6 +31,8 @@ class CreditsViewModel implements ArgumentInterface
     }
 
     /**
+     * Returns the credits text label from config.
+     *
      * @return string
      */
     public function getText(): string
@@ -42,6 +44,8 @@ class CreditsViewModel implements ArgumentInterface
     }
 
     /**
+     * Returns the credits URL anchor text from config.
+     *
      * @return string
      */
     public function getUrlText(): string
@@ -53,6 +57,8 @@ class CreditsViewModel implements ArgumentInterface
     }
 
     /**
+     * Returns the credits URL from config.
+     *
      * @return string
      */
     public function getUrl(): string

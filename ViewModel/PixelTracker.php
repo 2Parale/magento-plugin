@@ -75,7 +75,7 @@ class PixelTracker implements ArgumentInterface
             }
         }
 
-        // generate the description string 
+        // generate the description string
         $description = implode(', ', $descriptionParts);
 
         // construct the query arguments array
