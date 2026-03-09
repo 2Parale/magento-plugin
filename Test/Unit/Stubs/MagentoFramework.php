@@ -122,6 +122,18 @@ namespace Magento\Catalog\Model\ResourceModel\Category {
     }
 }
 
+namespace Magento\Store\Model {
+    if (!interface_exists('Magento\Store\Model\ScopeInterface')) {
+        interface ScopeInterface {
+            const SCOPE_STORE = 'store';
+            const SCOPE_STORES = 'stores';
+            const SCOPE_WEBSITE = 'website';
+            const SCOPE_WEBSITES = 'websites';
+            const SCOPE_GROUP = 'group';
+        }
+    }
+}
+
 namespace Magento\Framework\View\Element\Block {
     if (!interface_exists('Magento\Framework\View\Element\Block\ArgumentInterface')) {
         interface ArgumentInterface {}
