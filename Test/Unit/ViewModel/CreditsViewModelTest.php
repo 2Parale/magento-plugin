@@ -80,10 +80,37 @@ class CreditsViewModelTest extends TestCase
         $this->assertSame('', $this->creditsViewModel->getUrl());
     }
 
+    public function testIsEnabledReturnsTrueWhenConfigIsOne(): void
+    {
+        $this->scopeConfigMock->method('getValue')
+            ->with('twoperformant_credits/components/enabled', ScopeInterface::SCOPE_STORE)
+            ->willReturn('1');
+
+        $this->assertTrue($this->creditsViewModel->isEnabled());
+    }
+
+    public function testIsEnabledReturnsFalseWhenConfigIsZero(): void
+    {
+        $this->scopeConfigMock->method('getValue')
+            ->with('twoperformant_credits/components/enabled', ScopeInterface::SCOPE_STORE)
+            ->willReturn('0');
+
+        $this->assertFalse($this->creditsViewModel->isEnabled());
+    }
+
+    public function testIsEnabledReturnsFalseWhenConfigIsNull(): void
+    {
+        $this->scopeConfigMock->method('getValue')
+            ->with('twoperformant_credits/components/enabled', ScopeInterface::SCOPE_STORE)
+            ->willReturn(null);
+
+        $this->assertFalse($this->creditsViewModel->isEnabled());
+    }
+
     /**
-     * @dataProvider allGettersDataProvider
+     * @dataProvider allMethodsDataProvider
      */
-    public function testAllGettersUseStoreScope(string $method, string $expectedConfigSuffix)
+    public function testAllMethodsUseStoreScope(string $method, string $expectedConfigSuffix): void
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
@@ -96,12 +123,13 @@ class CreditsViewModelTest extends TestCase
         $this->creditsViewModel->$method();
     }
 
-    public function allGettersDataProvider(): array
+    public function allMethodsDataProvider(): array
     {
         return [
-            'getText uses text config path'       => ['getText', 'text'],
-            'getUrlText uses url_text config path' => ['getUrlText', 'url_text'],
-            'getUrl uses url config path'          => ['getUrl', 'url'],
+            'getText uses text config path'        => ['getText', 'text'],
+            'getUrlText uses url_text config path'  => ['getUrlText', 'url_text'],
+            'getUrl uses url config path'           => ['getUrl', 'url'],
+            'isEnabled uses enabled config path'    => ['isEnabled', 'enabled'],
         ];
     }
 }
