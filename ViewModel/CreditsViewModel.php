@@ -11,7 +11,7 @@ use Magento\Store\Model\ScopeInterface;
 /**
  * ViewModel for the footer credits block
  *
- * @since 1.1.0
+ * @since 1.0.0
  */
 class CreditsViewModel implements ArgumentInterface
 {
