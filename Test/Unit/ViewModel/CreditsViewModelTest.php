@@ -82,27 +82,27 @@ class CreditsViewModelTest extends TestCase
 
     public function testIsEnabledReturnsTrueWhenConfigIsOne(): void
     {
-        $this->scopeConfigMock->method('getValue')
+        $this->scopeConfigMock->method('isSetFlag')
             ->with('twoperformant_credits/components/enabled', ScopeInterface::SCOPE_STORE)
-            ->willReturn('1');
+            ->willReturn(true);
 
         $this->assertTrue($this->creditsViewModel->isEnabled());
     }
 
     public function testIsEnabledReturnsFalseWhenConfigIsZero(): void
     {
-        $this->scopeConfigMock->method('getValue')
+        $this->scopeConfigMock->method('isSetFlag')
             ->with('twoperformant_credits/components/enabled', ScopeInterface::SCOPE_STORE)
-            ->willReturn('0');
+            ->willReturn(false);
 
         $this->assertFalse($this->creditsViewModel->isEnabled());
     }
 
     public function testIsEnabledReturnsFalseWhenConfigIsNull(): void
     {
-        $this->scopeConfigMock->method('getValue')
+        $this->scopeConfigMock->method('isSetFlag')
             ->with('twoperformant_credits/components/enabled', ScopeInterface::SCOPE_STORE)
-            ->willReturn(null);
+            ->willReturn(false);
 
         $this->assertFalse($this->creditsViewModel->isEnabled());
     }
@@ -129,7 +129,6 @@ class CreditsViewModelTest extends TestCase
             'getText uses text config path'        => ['getText', 'text'],
             'getUrlText uses url_text config path'  => ['getUrlText', 'url_text'],
             'getUrl uses url config path'           => ['getUrl', 'url'],
-            'isEnabled uses enabled config path'    => ['isEnabled', 'enabled'],
         ];
     }
 }

@@ -76,7 +76,7 @@ class CreditsViewModel implements ArgumentInterface
      */
     public function isEnabled(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
+        return $this->scopeConfig->isSetFlag(
             self::CONFIG_PATH_PREFIX . 'enabled',
             ScopeInterface::SCOPE_STORE
         );
