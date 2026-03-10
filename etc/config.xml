@@ -17,6 +17,13 @@
                 <category_commissions>[]</category_commissions>
             </commissions>
         </twoperformant_commissions>
+        <twoperformant_credits>
+            <components>
+                <text>Active in</text>
+                <url_text>BusinessLeague</url_text>
+                <url>https://businessleague.com/</url>
+            </components>
+        </twoperformant_credits>
         <twoperformant>
             <params>
                 <big_bear_params>["2pau","2ptt","2ptu","2prp","2pdlst"]</big_bear_params>
