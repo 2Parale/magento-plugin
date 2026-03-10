@@ -68,4 +68,17 @@ class CreditsViewModel implements ArgumentInterface
             ScopeInterface::SCOPE_STORE
         );
     }
+
+    /**
+     * Returns whether the credits are enabled from config.
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return (bool) $this->scopeConfig->getValue(
+            self::CONFIG_PATH_PREFIX . 'enabled',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }
