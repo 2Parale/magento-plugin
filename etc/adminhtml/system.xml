@@ -56,5 +56,19 @@
                 </field>
             </group>
         </section>
+        <section id="twoperformant_credits" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Credits</label>
+            <tab>twoperformant</tab>
+            <resource>TwoPerformant_BusinessLeagueMarketing::config</resource>
+            <group id="components" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Footer Credits</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Credits in Store Footer</label>
+                    <comment>Show "Active in BusinessLeague" text in the store footer.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
     </system>
 </config>
