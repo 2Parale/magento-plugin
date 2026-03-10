@@ -32,6 +32,7 @@ namespace Magento\Framework\App\Config {
     if (!interface_exists('Magento\Framework\App\Config\ScopeConfigInterface')) {
         interface ScopeConfigInterface {
             public function getValue($path, $scopeType = 'default', $scopeCode = null);
+            public function isSetFlag($path, $scopeType = 'default', $scopeCode = null);
         }
     }
 }
