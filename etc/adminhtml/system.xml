@@ -65,7 +65,7 @@
                 <label>Footer Credits</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Display Credits in Store Footer</label>
-                    <comment>Show "Active in BusinessLeague" text in the store footer.</comment>
+                    <comment>Show credits text/link in the store footer.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
