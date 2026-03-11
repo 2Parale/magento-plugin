@@ -110,15 +110,19 @@ class CreditsViewModelTest extends TestCase
     /**
      * @dataProvider allMethodsDataProvider
      */
-    public function testAllMethodsUseStoreScope(string $method, string $expectedConfigSuffix): void
-    {
+    public function testAllMethodsUseStoreScope(
+        string $method,
+        string $scopeConfigMethod,
+        string $expectedConfigSuffix,
+        mixed $stubReturn
+    ): void {
         $this->scopeConfigMock->expects($this->once())
-            ->method('getValue')
+            ->method($scopeConfigMethod)
             ->with(
                 'twoperformant_credits/components/' . $expectedConfigSuffix,
                 ScopeInterface::SCOPE_STORE
             )
-            ->willReturn('test');
+            ->willReturn($stubReturn);
 
         $this->creditsViewModel->$method();
     }
@@ -126,9 +130,10 @@ class CreditsViewModelTest extends TestCase
     public function allMethodsDataProvider(): array
     {
         return [
-            'getText uses text config path'        => ['getText', 'text'],
-            'getUrlText uses url_text config path'  => ['getUrlText', 'url_text'],
-            'getUrl uses url config path'           => ['getUrl', 'url'],
+            'getText uses text config path'        => ['getText', 'getValue', 'text', 'test'],
+            'getUrlText uses url_text config path'  => ['getUrlText', 'getValue', 'url_text', 'test'],
+            'getUrl uses url config path'           => ['getUrl', 'getValue', 'url', 'test'],
+            'isEnabled uses enabled config path'    => ['isEnabled', 'isSetFlag', 'enabled', true],
         ];
     }
 }
