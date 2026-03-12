@@ -33,4 +33,12 @@ class CreditsViewModelTest extends TestCase
         $this->assertSame('BusinessLeague', $this->viewModel->getUrlText());
         $this->assertSame('https://businessleague.com/', $this->viewModel->getUrl());
     }
+
+    /**
+     * The default config.xml sets enabled=1, so isEnabled() must return true out of the box.
+     */
+    public function testIsEnabledReturnsTrueByDefault(): void
+    {
+        $this->assertTrue($this->viewModel->isEnabled());
+    }
 }

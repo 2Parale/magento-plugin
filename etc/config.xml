@@ -19,6 +19,7 @@
         </twoperformant_commissions>
         <twoperformant_credits>
             <components>
+                <enabled>1</enabled>
                 <text>Active in</text>
                 <url_text>BusinessLeague</url_text>
                 <url>https://businessleague.com/</url>
