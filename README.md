@@ -13,6 +13,7 @@ Magento 2 / Adobe Commerce extension that integrates 2Performant tracking for cl
 - Supports configurable category-based commissions (with default fallback).
 - Includes CSP whitelist entries for required tracking domains.
 - Validates remote click script URL before injection.
+- Inserts the credits text "Active in BusinessLeague" with a link to businessleague.com in the footer of every page of the store. Can be disabled if you want to customize how the credits text is added.
 
 ## Package
 
@@ -53,6 +54,10 @@ In Magento Admin, go to:
 - **Default Commission**
 - **Commissions List** (Category ID → Commission Value)
 
+### 3) Credits
+
+- **Display Credits in Store Footer**
+
 ## How it works
 
 - A frontend observer injects the click script only when `Big Bear Unique ID` is configured and URL validation passes.
@@ -60,6 +65,7 @@ In Magento Admin, go to:
 - On checkout success, the module renders tracking output using view models:
 	- serialized `tpOrder` object for sales script consumption
 	- conversion iframe URL containing campaign, confirm, amount, description and transaction id; the overall commission percent is also added when variable commission is enabled.
+- The credits text is added via a layout block injected into the `footer` container on every storefront page 
 
 ## Uninstall
 
