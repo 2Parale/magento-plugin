@@ -86,6 +86,7 @@ namespace Magento\Catalog\Model {
         class Category {
             public function getId() {}
             public function getName() {}
+            public function getPath() {}
         }
     }
 }

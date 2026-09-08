@@ -22,6 +22,7 @@ class CategoryColumnTest extends TestCase
 
     /**
      * @magentoAppArea adminhtml
+     * @magentoDataFixture Magento/Catalog/_files/category.php
      */
     public function testToHtmlBuildsOptionsFromCategories(): void
     {
@@ -38,5 +39,10 @@ class CategoryColumnTest extends TestCase
         $this->assertArrayHasKey('label', $first);
         $this->assertStringContainsString('(ID:', $first['label']);
         $this->assertStringContainsString('option', $html);
+
+        // "Default Category" (ID: 2) is level 1 and must be excluded now
+        foreach ($options as $option) {
+            $this->assertNotEquals(2, $option['value']);
+        }
     }
 }

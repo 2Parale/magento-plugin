@@ -123,6 +123,7 @@ class TransactionInfoTest extends TestCase
         $categoryMock = $this->createMock(Category::class);
         $categoryMock->method('getId')->willReturn(7);
         $categoryMock->method('getName')->willReturn('Electronics');
+        $categoryMock->method('getPath')->willReturn('1/2/7');
 
         $categoryCollectionMock->method('getIterator')
             ->willReturn(new \ArrayIterator([$categoryMock]));
@@ -184,5 +185,60 @@ class TransactionInfoTest extends TestCase
         $result = $this->transactionInfo->getTransactionInfo();
 
         $this->assertEquals('Generic Brand', $result['items'][0]['brand']);
+    }
+
+    /**
+     * Test that a product assigned only to a subcategory still gets its root ancestor's commission
+     */
+    public function testGetTransactionInfoAppliesRootCategoryCommissionForSubcategoryProduct()
+    {
+        $this->configMock->method('getCategoryCommissionsEnabled')->willReturn(true);
+        $this->configMock->method('getCategoryCommissions')->willReturn([7 => 10.0]);
+        $this->configMock->method('getDefaultCommissionValue')->willReturn(2.0);
+
+        $orderMock = $this->createMock(Order::class);
+        $this->checkoutSessionMock->method('getLastRealOrder')->willReturn($orderMock);
+        $orderMock->method('getIncrementId')->willReturn('10000002');
+        $orderMock->method('getCreatedAt')->willReturn('2023-01-01 12:00:00');
+        $orderMock->method('getOrderCurrencyCode')->willReturn('USD');
+
+        $itemMock = $this->createMock(Item::class);
+        $orderMock->method('getAllVisibleItems')->willReturn([$itemMock]);
+        $itemMock->method('getPrice')->willReturn(20.00);
+        $itemMock->method('getDiscountAmount')->willReturn(0.0);
+        $itemMock->method('getProductId')->willReturn('101');
+        $itemMock->method('getName')->willReturn('Sub Product');
+        $itemMock->method('getQtyOrdered')->willReturn(1);
+
+        $productCollectionMock = $this->createMock(ProductCollection::class);
+        $this->productCollectionFactoryMock->method('create')->willReturn($productCollectionMock);
+        $productCollectionMock->method('addAttributeToSelect')->willReturnSelf();
+        $productCollectionMock->method('addIdFilter')->willReturnSelf();
+
+        $productMock = $this->createMock(Product::class);
+        $productMock->method('getId')->willReturn(101);
+        // assigned only to the leaf category, not its root ancestor
+        $productMock->method('getCategoryIds')->willReturn([9]);
+
+        $productCollectionMock->method('getIterator')
+            ->willReturn(new \ArrayIterator([$productMock]));
+
+        $categoryCollectionMock = $this->createMock(CategoryCollection::class);
+        $this->categoryCollectionFactoryMock->method('create')->willReturn($categoryCollectionMock);
+        $categoryCollectionMock->method('addAttributeToSelect')->willReturnSelf();
+        $categoryCollectionMock->method('addIdFilter')->willReturnSelf();
+
+        $categoryMock = $this->createMock(Category::class);
+        $categoryMock->method('getId')->willReturn(9);
+        $categoryMock->method('getName')->willReturn('Leaf Category');
+        // root catalog(1) / store root(2) / root category(7) / leaf category(9)
+        $categoryMock->method('getPath')->willReturn('1/2/7/9');
+
+        $categoryCollectionMock->method('getIterator')
+            ->willReturn(new \ArrayIterator([$categoryMock]));
+
+        $result = $this->transactionInfo->getTransactionInfo();
+
+        $this->assertEquals(10.0, $result['items'][0]['commission_percent']);
     }
 }
