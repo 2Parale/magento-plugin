@@ -142,6 +142,7 @@ class TransactionInfo implements ArgumentInterface
 
         // load all Categories in one query (ID => Name map)
         $categoryNamesMap = [];
+        $categoryRootIdMap = [];
         if (!empty($allCategoryIds)) {
             $allCategoryIds = array_unique($allCategoryIds);
             $categoryCollection = $this->categoryCollectionFactory->create();
@@ -150,6 +151,7 @@ class TransactionInfo implements ArgumentInterface
             
             foreach ($categoryCollection as $category) {
                 $categoryNamesMap[$category->getId()] = $category->getName();
+                $categoryRootIdMap[(int)$category->getId()] = $this->resolveRootCategoryId((string)$category->getPath());
             }
         }
 
@@ -186,8 +188,9 @@ class TransactionInfo implements ArgumentInterface
                 }
                 
                 // check if the category is in the special commission categories
-                if ($categoryCommissionsEnabled && isset($specialCategoryCommissionsById[$catId])) {
-                    $catCommission = $specialCategoryCommissionsById[$catId];
+                $rootCatId = $categoryRootIdMap[$catId] ?? null;
+                if ($categoryCommissionsEnabled && $rootCatId !== null && isset($specialCategoryCommissionsById[$rootCatId])) {
+                    $catCommission = $specialCategoryCommissionsById[$rootCatId];
                     if ($commissionValue === null || $catCommission < $commissionValue) {
                         $commissionValue = $catCommission;
                     }
@@ -237,5 +240,17 @@ class TransactionInfo implements ArgumentInterface
         }
 
         return $itemsResult;
+    }
+
+    /**
+     * Resolve the top-level "root" category ID (level 2) from a category's path
+     *
+     * @param string $path
+     * @return int|null
+     */
+    private function resolveRootCategoryId(string $path): ?int
+    {
+        $segments = explode('/', $path);
+        return isset($segments[2]) ? (int) $segments[2] : null;
     }
 }

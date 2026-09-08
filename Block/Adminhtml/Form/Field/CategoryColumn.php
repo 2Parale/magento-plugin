@@ -54,7 +54,7 @@ class CategoryColumn extends Select
         if (!$this->getOptions()) {
             $collection = $this->categoryCollectionFactory->create();
             $collection->addAttributeToSelect('name');
-            $collection->addFieldToFilter('level', ['eq' => 1]);
+            $collection->addFieldToFilter('level', ['eq' => 2]);
             
             $options = [];
             foreach ($collection as $category) {
