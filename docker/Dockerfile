@@ -1,4 +1,4 @@
-FROM markoshust/magento-php:8.2-fpm
+FROM markoshust/magento-php:8.3-fpm
 
 # Add Magento Marketplace keys
 ARG MAGENTO_PUBLIC_KEY
