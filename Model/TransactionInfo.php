@@ -213,11 +213,14 @@ class TransactionInfo implements ArgumentInterface
                 }
             }
 
-            // calculate net value with discount
-            $discountAmount = (float) $item->getDiscountAmount();
+            // Excl. VAT unit value after discount. row_total is excl. tax before
+            // discount; discount_amount may include tax, so add Magento's
+            // discount_tax_compensation_amount to keep both in the same tax space.
             $qtyOrdered = (int) $item->getQtyOrdered();
-            $unitDiscount = $qtyOrdered > 0 ? $discountAmount / $qtyOrdered : 0.0;
-            $netValue = (float)$item->getPrice() - $unitDiscount;
+            $netPaid = (float) $item->getRowTotal()
+                - (float) $item->getDiscountAmount()
+                + (float) $item->getDiscountTaxCompensationAmount();
+            $netValue = $qtyOrdered > 0 ? $netPaid / $qtyOrdered : 0.0;
 
             // build item
             $itemData = [
