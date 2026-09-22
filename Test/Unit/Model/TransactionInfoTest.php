@@ -88,8 +88,9 @@ class TransactionInfoTest extends TestCase
         $itemMock = $this->createMock(Item::class);
         $orderMock->expects($this->once())->method('getAllVisibleItems')->willReturn([$itemMock]);
 
-        $itemMock->method('getPrice')->willReturn(100.00);
+        $itemMock->method('getRowTotal')->willReturn(200.00);
         $itemMock->method('getDiscountAmount')->willReturn(0.0);
+        $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('99');
         $itemMock->method('getName')->willReturn('Test Product');
         $itemMock->method('getQtyOrdered')->willReturn(2);
@@ -160,8 +161,9 @@ class TransactionInfoTest extends TestCase
         $itemMock = $this->createMock(Item::class);
         $orderMock->method('getAllVisibleItems')->willReturn([$itemMock]);
 
-        $itemMock->method('getPrice')->willReturn(50.00);
+        $itemMock->method('getRowTotal')->willReturn(50.00);
         $itemMock->method('getDiscountAmount')->willReturn(0.0);
+        $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('99');
         $itemMock->method('getName')->willReturn('Test Product');
         $itemMock->method('getQtyOrdered')->willReturn(1);
@@ -204,8 +206,9 @@ class TransactionInfoTest extends TestCase
 
         $itemMock = $this->createMock(Item::class);
         $orderMock->method('getAllVisibleItems')->willReturn([$itemMock]);
-        $itemMock->method('getPrice')->willReturn(20.00);
+        $itemMock->method('getRowTotal')->willReturn(20.00);
         $itemMock->method('getDiscountAmount')->willReturn(0.0);
+        $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('101');
         $itemMock->method('getName')->willReturn('Sub Product');
         $itemMock->method('getQtyOrdered')->willReturn(1);
@@ -240,5 +243,45 @@ class TransactionInfoTest extends TestCase
         $result = $this->transactionInfo->getTransactionInfo();
 
         $this->assertEquals(10.0, $result['items'][0]['commission_percent']);
+    }
+
+    /**
+     * Catalog prices incl. tax + coupon on incl. tax: mix getPrice() with
+     * discount_amount would under-report. Use row_total - discount + compensation.
+     */
+    public function testGetTransactionInfoValueIsExclVatAfterDiscountWithTaxCompensation()
+    {
+        $orderMock = $this->createMock(Order::class);
+        $this->checkoutSessionMock->method('getLastRealOrder')->willReturn($orderMock);
+        $orderMock->method('getIncrementId')->willReturn('000003396');
+        $orderMock->method('getCreatedAt')->willReturn('2026-09-21 12:00:00');
+        $orderMock->method('getOrderCurrencyCode')->willReturn('RON');
+
+        $itemMock = $this->createMock(Item::class);
+        $orderMock->method('getAllVisibleItems')->willReturn([$itemMock]);
+        // Old formula used getPrice() - discount/qty => 20.27 - 19.62 = 0.65
+        $itemMock->method('getPrice')->willReturn(20.27);
+        $itemMock->method('getRowTotal')->willReturn(40.54);
+        $itemMock->method('getDiscountAmount')->willReturn(39.24);
+        $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(6.82);
+        $itemMock->method('getProductId')->willReturn('1211');
+        $itemMock->method('getName')->willReturn('Toner');
+        $itemMock->method('getQtyOrdered')->willReturn(2);
+
+        $productCollectionMock = $this->createMock(ProductCollection::class);
+        $this->productCollectionFactoryMock->method('create')->willReturn($productCollectionMock);
+        $productCollectionMock->method('addAttributeToSelect')->willReturnSelf();
+        $productCollectionMock->method('addIdFilter')->willReturnSelf();
+
+        $productMock = $this->createMock(Product::class);
+        $productMock->method('getId')->willReturn(1211);
+        $productMock->method('getCategoryIds')->willReturn([]);
+        $productCollectionMock->method('getIterator')
+            ->willReturn(new \ArrayIterator([$productMock]));
+
+        $result = $this->transactionInfo->getTransactionInfo();
+
+        // (40.54 - 39.24 + 6.82) / 2 = 4.06
+        $this->assertEquals('4.06', $result['items'][0]['value']);
     }
 }

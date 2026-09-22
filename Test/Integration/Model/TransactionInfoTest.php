@@ -50,6 +50,13 @@ class TransactionInfoTest extends TestCase
 
         $this->assertNotNull($order->getId(), 'Fixture order not found.');
 
+        // The core fixture leaves row_total inconsistent with qty_ordered * price;
+        // align it so the assertions below reflect realistic order data.
+        foreach ($order->getAllItems() as $item) {
+            $item->setRowTotal((float) $item->getQtyOrdered() * (float) $item->getPrice());
+            $item->save();
+        }
+
         // 2. Set the order as the "Last Real Order" in the session
         $this->checkoutSession->setLastRealOrderId($order->getIncrementId());
 

@@ -62,6 +62,8 @@ namespace Magento\Sales\Model\Order {
         class Item {
             public function getPrice() {}
             public function getDiscountAmount() {}
+            public function getDiscountTaxCompensationAmount() {}
+            public function getRowTotal() {}
             public function getProduct() {}
             public function getProductId() {}
             public function getName() {}
