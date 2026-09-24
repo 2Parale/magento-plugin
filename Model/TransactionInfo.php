@@ -216,7 +216,7 @@ class TransactionInfo implements ArgumentInterface
             // Excl. VAT unit value after discount. row_total is excl. tax before
             // discount; discount_amount may include tax, so add Magento's
             // discount_tax_compensation_amount to keep both in the same tax space.
-            $qtyOrdered = (int) $item->getQtyOrdered();
+            $qtyOrdered = (float) $item->getQtyOrdered();
             $netPaid = (float) $item->getRowTotal()
                 - (float) $item->getDiscountAmount()
                 + (float) $item->getDiscountTaxCompensationAmount();

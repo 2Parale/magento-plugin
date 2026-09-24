@@ -93,7 +93,7 @@ class TransactionInfoTest extends TestCase
         $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('99');
         $itemMock->method('getName')->willReturn('Test Product');
-        $itemMock->method('getQtyOrdered')->willReturn(2);
+        $itemMock->method('getQtyOrdered')->willReturn(2.0);
 
         // 3. Mock Product Collection + Product
         $productCollectionMock = $this->createMock(ProductCollection::class);
@@ -166,7 +166,7 @@ class TransactionInfoTest extends TestCase
         $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('99');
         $itemMock->method('getName')->willReturn('Test Product');
-        $itemMock->method('getQtyOrdered')->willReturn(1);
+        $itemMock->method('getQtyOrdered')->willReturn(1.0);
 
         $productCollectionMock = $this->createMock(ProductCollection::class);
         $this->productCollectionFactoryMock->method('create')
@@ -211,7 +211,7 @@ class TransactionInfoTest extends TestCase
         $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(0.0);
         $itemMock->method('getProductId')->willReturn('101');
         $itemMock->method('getName')->willReturn('Sub Product');
-        $itemMock->method('getQtyOrdered')->willReturn(1);
+        $itemMock->method('getQtyOrdered')->willReturn(1.0);
 
         $productCollectionMock = $this->createMock(ProductCollection::class);
         $this->productCollectionFactoryMock->method('create')->willReturn($productCollectionMock);
@@ -266,7 +266,7 @@ class TransactionInfoTest extends TestCase
         $itemMock->method('getDiscountTaxCompensationAmount')->willReturn(6.82);
         $itemMock->method('getProductId')->willReturn('1211');
         $itemMock->method('getName')->willReturn('Toner');
-        $itemMock->method('getQtyOrdered')->willReturn(2);
+        $itemMock->method('getQtyOrdered')->willReturn(2.0);
 
         $productCollectionMock = $this->createMock(ProductCollection::class);
         $this->productCollectionFactoryMock->method('create')->willReturn($productCollectionMock);
